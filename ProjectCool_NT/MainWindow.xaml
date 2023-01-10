@@ -1,0 +1,450 @@
+﻿<Window x:Class="ProjectCool_NT.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProjectCool_NT"
+        mc:Ignorable="d" 
+        Height="450" 
+        Width="800" 
+        AllowsTransparency="True" 
+        Background="Transparent" 
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        MouseDown="DragDropHandler">
+    <Border Background="#212121" CornerRadius="10" BorderThickness="2">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Offset="0.0" Color="#ff004c"/>
+                <GradientStop Offset="0.25" Color="#ff0090"/>
+                <GradientStop Offset="0.75" Color="#ff00f7"/>
+                <GradientStop Offset="1" Color="#b300ff"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+
+        <Grid x:Name="MainGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="UpperMenuGrid" Margin="2,2,2,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="25"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="Minimize" 
+                        Grid.Column="1" 
+                        Foreground="White"
+                        BorderThickness="0"
+                        Content="_">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#1a303d"></Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="20" Height="20" CornerRadius="5" BorderThickness="0" Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button x:Name="Close" 
+                        Grid.Column="2" 
+                        Foreground="White"
+                        BorderThickness="0"
+                        Content="X">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#a1002b"></Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="20" Height="20" CornerRadius="5" BorderThickness="0" Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <TextBlock x:Name="WindowName" 
+                           Grid.Column="0" 
+                           Text="ProjectCool" 
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           FontSize="15"
+                           FontWeight="Light"
+                           Margin="2,0,0,0"
+                           FontFamily="Trebuchet MS">
+                    <TextBlock.Foreground>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0.0" Color="#ff004c"/>
+                            <GradientStop Offset="0.25" Color="#ff0090"/>
+                            <GradientStop Offset="0.75" Color="#ff00f7"/>
+                            <GradientStop Offset="1" Color="#b300ff"/>
+                        </LinearGradientBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
+
+            </Grid>
+            <Grid x:Name="UIgrid" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border x:Name="Menu" 
+                        Grid.Column="0" 
+                        CornerRadius="10"
+                        Background="#262626">
+                    <StackPanel x:Name="MenuButtonsContainer" Margin="2,2,2,2">
+                        <RadioButton Content="Home"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     IsChecked="True" 
+                                     Margin="2,2,2,2"
+                                     x:Name="HomeButton"
+                                     >
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                                                        <GradientStop Offset="0.98" Color="#ff004c"/>
+                                                        <GradientStop Offset="0" Color="Transparent"/>
+                                                        <GradientStop Offset="0.5" Color="Transparent"/>
+                                                        <GradientStop Offset="0.56" Color="#73056f"/>
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="Foreground" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                            <RadioButton.Template>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Border Width="25" Height="25"  
+                                            Grid.Row="0" Margin="2,10,2,2">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="Icons/home.png" Stretch="Uniform"/>
+                                            </Border.Background>
+                                        </Border>
+                                        <Border Width="60" Height="20" 
+                                            CornerRadius="5" 
+                                            Background="{TemplateBinding Background}" 
+                                            BorderThickness="0"
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            Grid.Row="1" Margin="0,0,0,2">
+                                            <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </RadioButton.Template>
+                        </RadioButton>
+
+                        <RadioButton Content="Dashboard"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="DashboardButton">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                                                        <GradientStop Offset="0.98" Color="#ff004c"/>
+                                                        <GradientStop Offset="0" Color="Transparent"/>
+                                                        <GradientStop Offset="0.5" Color="Transparent"/>
+                                                        <GradientStop Offset="0.56" Color="#73056f"/>
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="Foreground" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                            <RadioButton.Template>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Border Width="25" Height="25"  
+                                            Grid.Row="0" Margin="2,10,2,2">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="Icons/dashboard.png" Stretch="Uniform"/>
+                                            </Border.Background>
+                                        </Border>
+                                        <Border Width="60" Height="20" 
+                                            CornerRadius="5" 
+                                            Background="{TemplateBinding Background}" 
+                                            BorderThickness="0"
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            Grid.Row="1" Margin="0,0,0,2">
+                                            <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </RadioButton.Template>
+                        </RadioButton>
+
+                        <RadioButton Content="LED"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="LEDButton">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                                                        <GradientStop Offset="0.98" Color="#ff004c"/>
+                                                        <GradientStop Offset="0" Color="Transparent"/>
+                                                        <GradientStop Offset="0.5" Color="Transparent"/>
+                                                        <GradientStop Offset="0.56" Color="#73056f"/>
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="Foreground" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                            <RadioButton.Template>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Border Width="25" Height="25"  
+                                            Grid.Row="0" Margin="2,10,2,2">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="Icons/led.png" Stretch="Uniform"/>
+                                            </Border.Background>
+                                        </Border>
+                                        <Border Width="60" Height="20" 
+                                            CornerRadius="5" 
+                                            Background="{TemplateBinding Background}" 
+                                            BorderThickness="0"
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            Grid.Row="1" Margin="0,0,0,2">
+                                            <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </RadioButton.Template>
+                        </RadioButton>
+
+                        <RadioButton Content="Fan"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="FanButton">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                                                        <GradientStop Offset="0.98" Color="#ff004c"/>
+                                                        <GradientStop Offset="0" Color="Transparent"/>
+                                                        <GradientStop Offset="0.5" Color="Transparent"/>
+                                                        <GradientStop Offset="0.56" Color="#73056f"/>
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="Foreground" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                            <RadioButton.Template>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Border Width="25" Height="25"  
+                                            Grid.Row="0" Margin="2,10,2,2">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="Icons/fan.png" Stretch="Uniform"/>
+                                            </Border.Background>
+                                        </Border>
+                                        <Border Width="60" Height="20" 
+                                            CornerRadius="5" 
+                                            Background="{TemplateBinding Background}" 
+                                            BorderThickness="0"
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            Grid.Row="1" Margin="0,0,0,2">
+                                            <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </RadioButton.Template>
+                        </RadioButton>
+
+                        <RadioButton Content="Settings"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="SettingsButton">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                                                        <GradientStop Offset="0.98" Color="#ff004c"/>
+                                                        <GradientStop Offset="0" Color="Transparent"/>
+                                                        <GradientStop Offset="0.5" Color="Transparent"/>
+                                                        <GradientStop Offset="0.56" Color="#73056f"/>
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="Foreground" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                            <RadioButton.Template>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Border Width="25" Height="25"  
+                                            Grid.Row="0" Margin="2,10,2,2">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="Icons/settings.png" Stretch="Uniform"/>
+                                            </Border.Background>
+                                        </Border>
+                                        <Border Width="60" Height="20" 
+                                            CornerRadius="5" 
+                                            Background="{TemplateBinding Background}" 
+                                            BorderThickness="0"
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            Grid.Row="1" Margin="0,0,0,2">
+                                            <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </RadioButton.Template>
+                        </RadioButton>
+
+                        <RadioButton Content="About"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="AboutButton">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                                                        <GradientStop Offset="0.98" Color="#ff004c"/>
+                                                        <GradientStop Offset="0" Color="Transparent"/>
+                                                        <GradientStop Offset="0.5" Color="Transparent"/>
+                                                        <GradientStop Offset="0.56" Color="#73056f"/>
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="Foreground" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                            <RadioButton.Template>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Border Width="25" Height="25"  
+                                            Grid.Row="0" Margin="2,10,2,2">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="Icons/about.png" Stretch="Uniform"/>
+                                            </Border.Background>
+                                        </Border>
+                                        <Border Width="60" Height="20" 
+                                            CornerRadius="5" 
+                                            Background="{TemplateBinding Background}" 
+                                            BorderThickness="0"
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            Grid.Row="1" Margin="0,0,0,2">
+                                            <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </RadioButton.Template>
+                        </RadioButton>
+                    </StackPanel>
+                </Border>
+                <Frame Grid.Column="1"
+                       Margin="5"
+                       NavigationUIVisibility="Hidden"
+                       x:Name="PageContainer"
+                       >
+                </Frame>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
