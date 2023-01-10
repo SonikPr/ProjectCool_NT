@@ -9,6 +9,6 @@
       Title="Fan">
 
     <Border>
-        <TextBlock Text="Fan" Foreground="White"></TextBlock>
+        <TextBlock Text="FanBlock" Foreground="White"></TextBlock>
     </Border>
 </Page>
