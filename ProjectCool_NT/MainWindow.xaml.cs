@@ -24,6 +24,14 @@ namespace ProjectCool_NT
         {
             InitializeComponent();
 
+            foreach(UIElement Button in UpperMenuGrid.Children)
+            {
+                if(Button is Button)
+                {
+                    ((Button)Button).Click += TaskbarClick;
+                }
+            }
+
             foreach(UIElement Radiobutton in MenuButtonsContainer.Children)
             {
                 if(Radiobutton is RadioButton)
@@ -31,6 +39,25 @@ namespace ProjectCool_NT
                     ((RadioButton)Radiobutton).Checked += MenuItem_Checked;
                 }
             }
+            PageContainer.Navigate(new System.Uri("Pages/Home.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        private void TaskbarClick(object sender, RoutedEventArgs e)
+        {
+            switch (((Button)e.OriginalSource).Name)
+            {
+                case "Minimize":
+                    WindowState = WindowState.Minimized;
+                    break;
+                case "Close":
+                    Shutdown();
+                    break;
+            }
+        }
+
+        private void Shutdown()//This will be used in future to secure port closing, saving all the setings and safe app shutdown
+        {
+            App.Current.Shutdown();
         }
 
         private void MenuItem_Checked(object sender, RoutedEventArgs e)
