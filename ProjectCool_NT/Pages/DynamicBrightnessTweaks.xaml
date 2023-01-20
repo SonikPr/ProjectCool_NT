@@ -1,0 +1,395 @@
+﻿<Page x:Class="ProjectCool_NT.Pages.DynamicBrightnessTweaks"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ProjectCool_NT.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="270" d:DesignWidth="750"
+      Title="SpectreTweaks">
+
+    <Page.Resources>
+        <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border  BorderThickness="2" BorderBrush="#b300ff" Background="#b300ff" Height="15" CornerRadius="2" Opacity="0.2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border SnapsToDevicePixels="True" Background="#ff0090"  BorderThickness="1" CornerRadius="2" BorderBrush="#ff004c" Height="15" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderThumb" TargetType="Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border Height="25" Width="30" CornerRadius="5">
+                            <Border.Background>
+                                <ImageBrush ImageSource="slider.png" Stretch="Uniform"/>
+                            </Border.Background>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="Slider"  TargetType="Slider">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Track Grid.Row="1" x:Name="PART_Track"   >
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton1}"  Command="Slider.DecreaseLarge" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource SliderThumb}"  />
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton}" Command="Slider.IncreaseLarge" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+
+        <Style x:Key="Horizontal_Slider" TargetType="Slider">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="MinHeight" Value="21" />
+                    <Setter Property="MinWidth" Value="104" />
+                    <Setter Property="Template" Value="{StaticResource Slider}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Border Margin="5,10,5,7" Width="740" Height="110" CornerRadius="10" Background="#333333" VerticalAlignment="Top">
+        <Grid x:Name="CommonLedTweaks">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="170"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock 
+                        Text="variable brightness props" 
+                        Margin="8,2,0,0" 
+                        FontSize="14" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="White" 
+                        Grid.Column="0" 
+                        Grid.Row="0"></TextBlock>
+            <TextBlock
+                            Text="Display color mode:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+            <TextBlock
+                            Text="Property:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            />
+            <Grid Grid.Column="1" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <RadioButton Content="Dynamic"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="DynamicColor"
+                                     Foreground="White"
+                                     Grid.Row="0" Grid.Column="0">
+                    <RadioButton.Style>
+                        <Style TargetType="RadioButton">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="#ff004c"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#600000"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RadioButton.Style>
+                    <RadioButton.Template>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="7"/>
+                                </Grid.RowDefinitions>
+                                <Border Width="60" Height="15" 
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            BorderBrush="Transparent" 
+                                            Grid.Row="0" Margin="0,0,0,2">
+                                    <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                </Border>
+                                <Border Name ="SelectMarker" Grid.Row="1"
+                                                Margin="1,0,1,1"
+                                                Width="30"
+                                                Height="5"
+                                                CornerRadius="3"
+                                                Background="{TemplateBinding Background}" 
+                                                ></Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </RadioButton.Template>
+                </RadioButton>
+
+                <RadioButton Content="Fire color"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="FlameColor"
+                                     Foreground="White"
+                                     Grid.Row="0" Grid.Column="1">
+                    <RadioButton.Style>
+                        <Style TargetType="RadioButton">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="#ff004c"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#600000"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RadioButton.Style>
+                    <RadioButton.Template>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="7"/>
+                                </Grid.RowDefinitions>
+                                <Border Width="60" Height="15" 
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            BorderBrush="Transparent" 
+                                            Grid.Row="0" Margin="0,0,0,2">
+                                    <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                </Border>
+                                <Border Name ="SelectMarker" Grid.Row="1"
+                                                Margin="1,0,1,1"
+                                                Width="30"
+                                                Height="5"
+                                                CornerRadius="3"
+                                                Background="{TemplateBinding Background}" 
+                                                ></Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </RadioButton.Template>
+                </RadioButton>
+            </Grid>
+            <Grid Grid.Column="1" Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <RadioButton Content="Temp"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="DisplayTemp"
+                                     Foreground="White"
+                                     Grid.Row="0" Grid.Column="0">
+                    <RadioButton.Style>
+                        <Style TargetType="RadioButton">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="#ff004c"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#600000"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RadioButton.Style>
+                    <RadioButton.Template>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="7"/>
+                                </Grid.RowDefinitions>
+                                <Border Width="60" Height="15" 
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            BorderBrush="Transparent" 
+                                            Grid.Row="0" Margin="0,0,0,2">
+                                    <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                </Border>
+                                <Border Name ="SelectMarker" Grid.Row="1"
+                                                Margin="1,0,1,1"
+                                                Width="30"
+                                                Height="5"
+                                                CornerRadius="3"
+                                                Background="{TemplateBinding Background}" 
+                                                ></Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </RadioButton.Template>
+                </RadioButton>
+
+                <RadioButton Content="Fan speed"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="DisplayFanSpeed"
+                                     Foreground="White"
+                                     Grid.Row="0" Grid.Column="1">
+                    <RadioButton.Style>
+                        <Style TargetType="RadioButton">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="#ff004c"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#600000"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RadioButton.Style>
+                    <RadioButton.Template>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="7"/>
+                                </Grid.RowDefinitions>
+                                <Border Width="60" Height="15" 
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            BorderBrush="Transparent" 
+                                            Grid.Row="0" Margin="0,0,0,2">
+                                    <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                </Border>
+                                <Border Name ="SelectMarker" Grid.Row="1"
+                                                Margin="1,0,1,1"
+                                                Width="30"
+                                                Height="5"
+                                                CornerRadius="3"
+                                                Background="{TemplateBinding Background}" 
+                                                ></Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </RadioButton.Template>
+                </RadioButton>
+
+                <RadioButton Content="Humidity"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="DisplayHumidity"
+                                     Foreground="White"
+                                     Grid.Row="0" Grid.Column="2">
+                    <RadioButton.Style>
+                        <Style TargetType="RadioButton">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="#ff004c"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#600000"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RadioButton.Style>
+                    <RadioButton.Template>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="7"/>
+                                </Grid.RowDefinitions>
+                                <Border Width="60" Height="15" 
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            BorderBrush="Transparent" 
+                                            Grid.Row="0" Margin="0,0,0,2">
+                                    <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                </Border>
+                                <Border Name ="SelectMarker" Grid.Row="1"
+                                                Margin="1,0,1,1"
+                                                Width="30"
+                                                Height="5"
+                                                CornerRadius="3"
+                                                Background="{TemplateBinding Background}" 
+                                                ></Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </RadioButton.Template>
+                </RadioButton>
+            </Grid>
+        </Grid>
+    </Border>
+</Page>
+

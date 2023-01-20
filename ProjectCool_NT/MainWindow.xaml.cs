@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using System.IO;
 
 namespace ProjectCool_NT
 {
@@ -24,17 +26,21 @@ namespace ProjectCool_NT
         {
             InitializeComponent();
 
-            foreach(UIElement Button in UpperMenuGrid.Children)
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(200);
+            timer.Tick += timer_Tick;
+            timer.Start();
+            foreach (UIElement Button in UpperMenuGrid.Children)
             {
-                if(Button is Button)
+                if (Button is Button)
                 {
                     ((Button)Button).Click += TaskbarClick;
                 }
             }
 
-            foreach(UIElement Radiobutton in MenuButtonsContainer.Children)
+            foreach (UIElement Radiobutton in MenuButtonsContainer.Children)
             {
-                if(Radiobutton is RadioButton)
+                if (Radiobutton is RadioButton)
                 {
                     ((RadioButton)Radiobutton).Checked += MenuItem_Checked;
                 }
@@ -84,6 +90,35 @@ namespace ProjectCool_NT
                     break;
             }
         }
+
+        int[] SensorValues = new int[6]; 
+        int value = 0;
+        void timer_Tick(object sender, EventArgs e)
+        {
+            SensorValues[0] = value;
+            SensorValues[1] = value;
+            SensorValues[2] = value;
+            SensorValues[3] = value;
+            SensorValues[4] = value;
+            SensorValues[5] = value;
+            if (value++ > 99)
+            {
+                value = 0;
+            }
+            TransferSensorData();
+        }
+
+        void TransferSensorData()
+        {
+            using (StreamWriter SensorData = new StreamWriter("SensorData.sensors", false))
+            {
+                for (int i = 0; i < SensorValues.Length; i++)
+                {
+                    SensorData.WriteLine(SensorValues[i]);
+                }
+            }
+        }
+
 
         private void DragDropHandler (object sender, MouseEventArgs e)
         {

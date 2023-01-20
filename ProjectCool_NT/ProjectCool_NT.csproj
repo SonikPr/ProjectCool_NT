@@ -15,6 +15,10 @@
     <None Remove="Icons\led.png" />
     <None Remove="Icons\minimize.png" />
     <None Remove="Icons\settings.png" />
+    <None Remove="Icons\slider.png" />
+    <None Remove="Pages\HUE2.png" />
+    <None Remove="Pages\SAT.jpg" />
+    <None Remove="Pages\slider_transparent.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +44,18 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Icons\settings.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Pages\HUE2.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Pages\SAT.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Pages\slider.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Pages\slider_transparent.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

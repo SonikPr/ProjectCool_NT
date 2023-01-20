@@ -64,7 +64,7 @@
         <ScrollViewer VerticalScrollBarVisibility="Hidden">
         <StackPanel>
             <TextBlock Text="Dashboard" Margin="10,2,0,0" FontSize="20" FontWeight="Medium" FontFamily="Trebuchet MS" Foreground="White"/>
-            <Border Margin="5,2,5,7" Width="750" Height="120" CornerRadius="10" Background="#333333">
+            <Border Margin="5,10,5,7" Width="750" Height="110" CornerRadius="10" Background="#333333">
                 <Grid x:Name="Temps">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="170"/>
@@ -72,8 +72,8 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock 
                         Text="Temps and humidity" 
@@ -438,8 +438,8 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock 
                         Text="LED statistics" 

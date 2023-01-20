@@ -21,6 +21,36 @@ namespace ProjectCool_NT.Pages
         public LED()
         {
             InitializeComponent();
+
+            foreach (UIElement Radiobutton in SwitchGrid.Children)
+            {
+                if (Radiobutton is RadioButton)
+                {
+                    ((RadioButton)Radiobutton).Checked += MenuItem_Checked;
+                }
+            }
+        }
+
+        private void MenuItem_Checked(object sender, RoutedEventArgs e)
+        {
+            switch (((RadioButton)e.OriginalSource).Name)
+            {
+                case "StaticMode":
+                    TweakContainer.Navigate(new System.Uri("Pages/StaticModeTweaks.xaml", UriKind.RelativeOrAbsolute));
+                    break;
+                case "SpectreMode":
+                    TweakContainer.Navigate(new System.Uri("Pages/SpectreTweaks.xaml", UriKind.RelativeOrAbsolute));
+                    break;
+                case "BreatheMode":
+                    TweakContainer.Navigate(new System.Uri("Pages/BreatheTweaks.xaml", UriKind.RelativeOrAbsolute));
+                    break;
+                case "DybBrMode":
+                    TweakContainer.Navigate(new System.Uri("Pages/DynamicBrightnessTweaks.xaml", UriKind.RelativeOrAbsolute));
+                    break;
+                default:
+                    TweakContainer.Navigate(null);
+                    break;
+            }
         }
     }
 }
