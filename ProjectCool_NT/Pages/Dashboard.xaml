@@ -3,12 +3,546 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ProjectCool_NT.Pages"
+      xmlns:local="clr-namespace:ProjectCool_NT.Windows.Controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Dashboard">
+    <Page.Resources>
+        <local:BorderClipConverter x:Key="BorderClip"/>
+        <Style TargetType="{x:Type ProgressBar}">
+            <Setter Property="Height" Value="16" />
+            <Setter Property="IsIndeterminate" Value="False" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0.0" Color="#ff004c"/>
+                        <GradientStop Offset="1" Color="#b300ff"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar" >
+                        <Grid x:Name="TemplateRoot" SnapsToDevicePixels="true">
+                            <Grid Margin="0,0,46,0">
 
-    <Border>
-        <TextBlock Text="Dashboard" Foreground="White"></TextBlock>
+                                <Rectangle x:Name="PART_Track" Fill="Transparent" />
+
+                                <Border x:Name="roundBorder" Background="Transparent" CornerRadius="8" />
+
+                                <Border x:Name="PART_Indicator" HorizontalAlignment="Left">
+
+                                    <Border.Clip>
+                                        <MultiBinding Converter="{StaticResource BorderClip}">
+                                            <Binding Path="ActualWidth" ElementName="roundBorder" />
+                                            <Binding Path="ActualHeight" ElementName="roundBorder" />
+                                            <Binding Path="CornerRadius" ElementName="roundBorder" />
+                                        </MultiBinding>
+                                    </Border.Clip>
+
+                                    <Grid x:Name="Foreground">
+                                        <Rectangle x:Name="Indicator" Fill="{TemplateBinding Background}" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                            <Path Name="_TagBackground" Fill="#683737" Data="M 0 0 H 44 A 9 9 0 0 1 44 16 H 0 A 9 9 0 0 0 0 0 z" HorizontalAlignment="Right"/>
+                            <TextBlock Name="_Tag" HorizontalAlignment="Right" Text="{TemplateBinding Tag}" Foreground="White" FontWeight="Medium" FontFamily="Trebuchet MS" Margin="0,1,10,0"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Value" Value="100">
+                                <Trigger.Setters>
+                                    <Setter TargetName="_TagBackground" Property="Fill" Value="RED"/>
+                                </Trigger.Setters>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Border Background="#262626" CornerRadius="10" >
+        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+        <StackPanel>
+            <TextBlock Text="Dashboard" Margin="10,2,0,0" FontSize="20" FontWeight="Medium" FontFamily="Trebuchet MS" Foreground="White"/>
+            <Border Margin="5,2,5,7" Width="750" Height="120" CornerRadius="10" Background="#333333">
+                <Grid x:Name="Temps">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock 
+                        Text="Temps and humidity" 
+                        Margin="8,2,0,0" 
+                        FontSize="15" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="White" 
+                        Grid.Column="0" 
+                        Grid.Row="0"></TextBlock>
+                    <TextBlock
+                        x:Name="SensorType"
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Text="Sensor type: DHT11 external sensor"
+                        FontSize="10" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="0,2,8,0"/>
+                    <Grid Grid.Column="1" Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="18">
+                            </RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ProgressBar 
+                        x:Name="CaseTemp"
+                        Value="71" 
+                        Tag="35.0" 
+                        Maximum="100" 
+                        Margin="5"
+                        Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                        />
+                        <TextBlock
+                            Text="20°"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Left"
+                        Margin="5,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            Text="50°"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="5,0,45,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                    </Grid>
+                    <Grid Grid.Column="1" Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="18">
+                            </RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ProgressBar 
+                        x:Name="CaseHumidity"
+                        Value="12" 
+                        Tag="12" 
+                        Maximum="100" 
+                        Margin="5"
+                        Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                        />
+                        <TextBlock
+                            Text="0%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Left"
+                        Margin="5,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            Text="100%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="5,0,45,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                    </Grid>
+                    <TextBlock
+                            Text="Case temperature:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                    <TextBlock
+                            Text="Case humidity:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            />
+                </Grid>
+            </Border>
+
+            <Border Margin="5,2,5,7" Width="750" Height="Auto" CornerRadius="10" Background="#333333">
+                <Grid x:Name="Fans">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock 
+                        Text="Fan speed" 
+                        Margin="8,2,0,0" 
+                        FontSize="15" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="White" 
+                        Grid.Column="0" 
+                        Grid.Row="0"></TextBlock>
+                    <TextBlock
+                        x:Name="FanConnection"
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Text="FanConnection: Common Molex power rail"
+                        FontSize="10" 
+                        FontWeight="Light" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="0,2,8,0"/>
+                    <Grid Grid.Column="1" Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height ="Auto"/>
+                            <RowDefinition Height="18">
+                            </RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ProgressBar 
+                        x:Name="FanSpeed"
+                        Value="50" 
+                        Tag="50" 
+                        Maximum="100" 
+                        Margin="5"
+                        Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                        />
+                        <TextBlock
+                            Text="0%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Left"
+                        Margin="5,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            Text="100%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="5,0,45,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                    </Grid>
+
+                    <Grid Grid.Column="1" Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height ="Auto"/>
+                            <RowDefinition Height="18">
+                            </RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ProgressBar 
+                        x:Name="FanCFM"
+                        Value="100" 
+                        Tag="32" 
+                        Maximum="100" 
+                        Margin="5"
+                        Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                        />
+                        <TextBlock
+                            Text="0%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Left"
+                        Margin="5,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            Text="100%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="5,0,45,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                    </Grid>
+                    <Grid Grid.Column="1" Grid.Row="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height ="Auto"/>
+                            <RowDefinition Height="18">
+                            </RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ProgressBar 
+                        x:Name="FanRPM"
+                        Value="100" 
+                        Tag="1100" 
+                        Maximum="100" 
+                        Margin="5"
+                        Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                        />
+                        <TextBlock
+                            Text="0%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Left"
+                        Margin="5,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            Text="100%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="5,0,45,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                    </Grid>
+
+                    <TextBlock
+                            Text="Fan speed:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans"
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="10,5,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                    <TextBlock
+                            Text="Fan airflow (CFM):"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans"
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="10,5,0,5"
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            />
+                    <TextBlock
+                            Text="Active fan mode:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans"
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="10,5,0,5"
+                            Grid.Column="0"
+                            Grid.Row="4"
+                            />
+                    <TextBlock
+                            Text="Fan tacho (RPM):"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans"
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="10,5,0,5"
+                            Grid.Column="0"
+                            Grid.Row="3"
+                            />
+                    <TextBlock
+                        x:Name="dashboardFanMode"
+                            Text="%FanMode%"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="2,7,0,5"
+                            Grid.Column="1"
+                            Grid.Row="4"
+                            />
+                </Grid>
+            </Border>
+            <Border Margin="5,2,5,7" Width="750" Height="120" CornerRadius="10" Background="#333333">
+                <Grid x:Name="LEDs">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock 
+                        Text="LED statistics" 
+                        Margin="8,2,0,0" 
+                        FontSize="15" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="White" 
+                        Grid.Column="0" 
+                        Grid.Row="0"></TextBlock>
+                    <TextBlock
+                        x:Name="Gear"
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Text="Hardware type: RZTK ARGB 120 (WS2812b compatible)"
+                        FontSize="10" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="0,2,8,0"/>
+                    <Grid Grid.Column="1" Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="18">
+                            </RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ProgressBar 
+                        x:Name="Brightness"
+                        Value="100" 
+                        Tag="100" 
+                        Maximum="100" 
+                        Margin="5"
+                        Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                        />
+                        <TextBlock
+                            Text="0%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Left"
+                        Margin="5,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            Text="100%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="5,0,45,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                    </Grid>
+                    <TextBlock
+                            Text="LED brightness:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                    <TextBlock
+                            Text="Active mode:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            />
+                    <TextBlock
+                        x:Name="dashboardActiveLEDMode"
+                            Text="%ActiveMode%"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            />
+                </Grid>
+            </Border>
+        </StackPanel>
+        </ScrollViewer>
     </Border>
 </Page>

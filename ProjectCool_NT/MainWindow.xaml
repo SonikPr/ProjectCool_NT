@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjectCool_NT"
         mc:Ignorable="d" 
-        Height="450" 
-        Width="800" 
+        Height="500" 
+        Width="900" 
         AllowsTransparency="True" 
         Background="Transparent" 
         WindowStartupLocation="CenterScreen"
@@ -443,7 +443,8 @@
                        Margin="5"
                        NavigationUIVisibility="Hidden"
                        x:Name="PageContainer"
-                       
+                       Width="800"
+                       Height="450"
                        >
                 </Frame>
             </Grid>
