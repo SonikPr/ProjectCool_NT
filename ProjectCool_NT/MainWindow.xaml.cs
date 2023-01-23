@@ -45,7 +45,7 @@ namespace ProjectCool_NT
                     ((RadioButton)Radiobutton).Checked += MenuItem_Checked;
                 }
             }
-            PageContainer.Navigate(new System.Uri("Pages/Home.xaml", UriKind.RelativeOrAbsolute));
+            PageContainer.Navigate(new System.Uri("Pages/Dashboard.xaml", UriKind.RelativeOrAbsolute));
         }
 
         private void TaskbarClick(object sender, RoutedEventArgs e)

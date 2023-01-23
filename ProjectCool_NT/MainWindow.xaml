@@ -111,64 +111,8 @@
                         CornerRadius="10"
                         Background="#262626">
                     <StackPanel x:Name="MenuButtonsContainer" Margin="2,2,2,2">
-                        <RadioButton Content="Home"
-                                     FontFamily="Trebuchet MS"
-                                     FontSize="12"
-                                     IsChecked="True" 
-                                     Margin="2,2,2,2"
-                                     x:Name="HomeButton"
-                                     Foreground="White"
-                                     >
-                            
-                            <RadioButton.Style>
-                                <Style TargetType="RadioButton">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsChecked" Value="True">
-                                            <Setter Property="Background" Value="#ff004c"/>
-                                        </Trigger>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#600000"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </RadioButton.Style>
-                            <RadioButton.Template>
-                                <ControlTemplate TargetType="RadioButton">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                            <RowDefinition Height="7"/>
-                                        </Grid.RowDefinitions>
-                                        <Border Width="25" Height="25"  
-                                            Grid.Row="0" Margin="2,10,2,2">
-                                            <Border.Background>
-                                                <ImageBrush ImageSource="Icons/home.png" Stretch="Uniform"/>
-                                            </Border.Background>
-                                        </Border>
-                                        <Border Width="60" Height="15" 
-                                            Background="Transparent"
-                                            BorderThickness="0"
-                                            BorderBrush="Transparent" 
-                                            Grid.Row="1" Margin="0,0,0,2">
-                                            <ContentPresenter 
-                                            VerticalAlignment="Bottom" 
-                                            HorizontalAlignment="Center"/>
-                                        </Border>
-                                        <Border Name ="SelectMarker" Grid.Row="2"
-                                                Margin="1,0,1,1"
-                                                Width="30"
-                                                Height="5"
-                                                CornerRadius="3"
-                                                Background="{TemplateBinding Background}" 
-                                                ></Border>
-                                    </Grid>
-                                </ControlTemplate>
-                            </RadioButton.Template>
-                        </RadioButton>
-
                         <RadioButton Content="Dashboard"
+                                     IsChecked="True"
                                      FontFamily="Trebuchet MS"
                                      FontSize="12"
                                      Margin="2,2,2,2"
