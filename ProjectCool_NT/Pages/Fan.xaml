@@ -3,12 +3,1015 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ProjectCool_NT.Pages"
+       xmlns:local="clr-namespace:ProjectCool_NT.Windows.Controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Fan">
+    <Page.Resources>
+            <local:BorderClipConverter x:Key="BorderClip"/>
+        <Style TargetType="{x:Type ProgressBar}">
+            <Setter Property="Height" Value="16" />
+            <Setter Property="IsIndeterminate" Value="False" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0.0" Color="#ff004c"/>
+                        <GradientStop Offset="1" Color="#b300ff"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar" >
+                        <Grid x:Name="TemplateRoot" SnapsToDevicePixels="true">
+                            <Grid Margin="0,0,46,0">
 
-    <Border>
-        <TextBlock Text="FanBlock" Foreground="White"></TextBlock>
-    </Border>
+                                <Rectangle x:Name="PART_Track" Fill="Transparent" />
+
+                                <Border x:Name="roundBorder" Background="Transparent" CornerRadius="8" />
+
+                                <Border x:Name="PART_Indicator" HorizontalAlignment="Left">
+
+                                    <Border.Clip>
+                                        <MultiBinding Converter="{StaticResource BorderClip}">
+                                            <Binding Path="ActualWidth" ElementName="roundBorder" />
+                                            <Binding Path="ActualHeight" ElementName="roundBorder" />
+                                            <Binding Path="CornerRadius" ElementName="roundBorder" />
+                                        </MultiBinding>
+                                    </Border.Clip>
+
+                                    <Grid x:Name="Foreground">
+                                        <Rectangle x:Name="Indicator" Fill="{TemplateBinding Background}" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                            <Path Name="_TagBackground" Fill="#683737" Data="M 0 0 H 44 A 9 9 0 0 1 44 16 H 0 A 9 9 0 0 0 0 0 z" HorizontalAlignment="Right"/>
+                            <TextBlock Name="_Tag" HorizontalAlignment="Right" Text="{TemplateBinding Tag}" Foreground="White" FontWeight="Medium" FontFamily="Trebuchet MS" Margin="0,1,10,0"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Value" Value="100">
+                                <Trigger.Setters>
+                                    <Setter TargetName="_TagBackground" Property="Fill" Value="RED"/>
+                                </Trigger.Setters>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border  BorderThickness="2" BorderBrush="#b300ff" Background="#b300ff" Height="15" Opacity="0.2" CornerRadius="0,8,8,0"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border SnapsToDevicePixels="True" Background="#ff0090"  BorderThickness="1" CornerRadius="8,0,0,8" BorderBrush="#ff004c" Height="15"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderThumb" TargetType="Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border Height="25" Width="30" CornerRadius="5">
+                            <Border.Background>
+                                <ImageBrush ImageSource="slider.png" Stretch="Uniform"/>
+                            </Border.Background>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="Slider"  TargetType="Slider">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Track Grid.Row="1" x:Name="PART_Track"   >
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton1}"  Command="Slider.DecreaseLarge" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource SliderThumb}"  />
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton}" Command="Slider.IncreaseLarge" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+
+        <Style x:Key="Horizontal_Slider" TargetType="Slider">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="MinHeight" Value="21" />
+                    <Setter Property="MinWidth" Value="104" />
+                    <Setter Property="Template" Value="{StaticResource Slider}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+    
+        <Border Background="#262626" CornerRadius="10" >
+            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                <StackPanel>
+                <TextBlock Text="Fan control panel" Margin="10,2,0,0" FontSize="20" FontWeight="Medium" FontFamily="Trebuchet MS" Foreground="White"/>
+                <Border Margin="5,2,5,7" Width="750" Height="Auto" CornerRadius="10" Background="#333333">
+                        <Grid x:Name="Fans">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="170"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                            <TextBlock 
+                        Text="Fan parameters" 
+                        Margin="8,2,0,0" 
+                        FontSize="15" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="White" 
+                        Grid.Column="0" 
+                        Grid.Row="0"></TextBlock>
+                            <TextBlock
+                        x:Name="FanConnection"
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Text="FanConnection: Common Molex power rail"
+                        FontSize="10" 
+                        FontWeight="Light" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="0,2,8,0"/>
+                            <Grid Grid.Column="1" Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height ="Auto"/>
+                                    <RowDefinition Height="18">
+                                    </RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <ProgressBar 
+                        x:Name="TagretRPM"
+                        Value="50" 
+                        Tag="50" 
+                        Maximum="100" 
+                        Margin="5"
+                        Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                        />
+                                <TextBlock
+                            Text="0%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Left"
+                        Margin="5,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                                <TextBlock
+                            Text="100%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="5,0,45,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                            </Grid>
+
+                            <Grid Grid.Column="1" Grid.Row="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height ="Auto"/>
+                                    <RowDefinition Height="18">
+                                    </RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <ProgressBar 
+                        x:Name="FanCFM"
+                        Value="100" 
+                        Tag="32" 
+                        Maximum="100" 
+                        Margin="5"
+                        Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                        />
+                                <TextBlock
+                            Text="0%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Left"
+                        Margin="5,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                                <TextBlock
+                            Text="100%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="5,0,45,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                            </Grid>
+                            <Grid Grid.Column="1" Grid.Row="4">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height ="Auto"/>
+                                    <RowDefinition Height="18">
+                                    </RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <ProgressBar 
+                        x:Name="TachoRPM"
+                        Value="100" 
+                        Tag="1100" 
+                        Maximum="100" 
+                        Margin="5"
+                        Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                        />
+                                <TextBlock
+                            Text="0%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Left"
+                        Margin="5,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                                <TextBlock
+                            Text="100%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="5,0,45,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                            </Grid>
+
+                        <Grid Grid.Column="1" Grid.Row="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height ="Auto"/>
+                                <RowDefinition Height="18">
+                                </RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <ProgressBar 
+                        x:Name="IntakeCFM"
+                        Value="100" 
+                        Tag="32" 
+                        Maximum="100" 
+                        Margin="5"
+                        Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                        />
+                            <TextBlock
+                            Text="0%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Left"
+                        Margin="5,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                            <TextBlock
+                            Text="100%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="5,0,45,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                        </Grid>
+                        <Grid Grid.Column="1" Grid.Row="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height ="Auto"/>
+                                <RowDefinition Height="18">
+                                </RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <ProgressBar 
+                        x:Name="ExhaustRPM"
+                        Value="100" 
+                        Tag="32" 
+                        Maximum="100" 
+                        Margin="5"
+                        Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                        />
+                            <TextBlock
+                            Text="0%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Left"
+                        Margin="5,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                            <TextBlock
+                            Text="100%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="5,0,45,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                        </Grid>
+
+                        <TextBlock
+                            Text="Target fan speed:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans"
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="10,5,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            Text="Intake fan airflow:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans"
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="10,5,0,5"
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            />
+                        <TextBlock
+                            Text="Exhaust fan airflow:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans"
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="10,5,0,5"
+                            Grid.Column="0"
+                            Grid.Row="3"
+                            />
+                        <TextBlock
+                            Text="Fan tacho (RPM):"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans"
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="10,5,0,5"
+                            Grid.Column="0"
+                            Grid.Row="4"
+                            />
+                    </Grid>
+                    </Border>
+                <Border Margin="5,10,5,7" Width="750" Height="Auto" CornerRadius="10" Background="#333333">
+                    <Grid x:Name="CommonLedTweaks">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="170"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock 
+                        Text="Fan presets" 
+                        Margin="8,2,0,0" 
+                        FontSize="15" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="White" 
+                        Grid.Column="0" 
+                        Grid.Row="0"></TextBlock>
+                        <TextBlock
+                            Text="Fan mode:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            Text="Manual fan speed:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            />
+                        <TextBlock
+                            Text="Hysteresis value:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="3"
+                            />
+                        <Grid x:Name ="SwitchGrid" Grid.Column="1" Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton Content="Default"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="StaticMode"
+                                     Foreground="White"
+                                     Grid.Row="0" Grid.Column="0">
+                                <RadioButton.Style>
+                                    <Style TargetType="RadioButton">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="Background" Value="#ff004c"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#600000"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </RadioButton.Style>
+                                <RadioButton.Template>
+                                    <ControlTemplate TargetType="RadioButton">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition Height="7"/>
+                                            </Grid.RowDefinitions>
+                                            <Border Width="60" Height="15" 
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            BorderBrush="Transparent" 
+                                            Grid.Row="0" Margin="0,0,0,2">
+                                                <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                            </Border>
+                                            <Border Name ="SelectMarker" Grid.Row="1"
+                                                Margin="1,0,1,1"
+                                                Width="30"
+                                                Height="5"
+                                                CornerRadius="3"
+                                                Background="{TemplateBinding Background}" 
+                                                ></Border>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </RadioButton.Template>
+                            </RadioButton>
+
+                            <RadioButton Content="Cool"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="SpectreMode"
+                                     Foreground="White"
+                                     Grid.Row="0" Grid.Column="1">
+                                <RadioButton.Style>
+                                    <Style TargetType="RadioButton">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="Background" Value="#ff004c"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#600000"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </RadioButton.Style>
+                                <RadioButton.Template>
+                                    <ControlTemplate TargetType="RadioButton">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition Height="7"/>
+                                            </Grid.RowDefinitions>
+                                            <Border Width="60" Height="15" 
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            BorderBrush="Transparent" 
+                                            Grid.Row="0" Margin="0,0,0,2">
+                                                <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                            </Border>
+                                            <Border Name ="SelectMarker" Grid.Row="1"
+                                                Margin="1,0,1,1"
+                                                Width="30"
+                                                Height="5"
+                                                CornerRadius="3"
+                                                Background="{TemplateBinding Background}" 
+                                                ></Border>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </RadioButton.Template>
+                            </RadioButton>
+
+                            <RadioButton Content="Quiet"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="RainbowMode"
+                                     Foreground="White"
+                                     Grid.Row="0" Grid.Column="2">
+                                <RadioButton.Style>
+                                    <Style TargetType="RadioButton">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="Background" Value="#ff004c"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#600000"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </RadioButton.Style>
+                                <RadioButton.Template>
+                                    <ControlTemplate TargetType="RadioButton">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition Height="7"/>
+                                            </Grid.RowDefinitions>
+                                            <Border Width="60" Height="15" 
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            BorderBrush="Transparent" 
+                                            Grid.Row="0" Margin="0,0,0,2">
+                                                <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                            </Border>
+                                            <Border Name ="SelectMarker" Grid.Row="1"
+                                                Margin="1,0,1,1"
+                                                Width="30"
+                                                Height="5"
+                                                CornerRadius="3"
+                                                Background="{TemplateBinding Background}" 
+                                                ></Border>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </RadioButton.Template>
+                            </RadioButton>
+
+                            <RadioButton Content="Fans off"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="FlameMode"
+                                     Foreground="White"
+                                     Grid.Row="1" Grid.Column="0">
+                                <RadioButton.Style>
+                                    <Style TargetType="RadioButton">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="Background" Value="#ff004c"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#600000"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </RadioButton.Style>
+                                <RadioButton.Template>
+                                    <ControlTemplate TargetType="RadioButton">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition Height="7"/>
+                                            </Grid.RowDefinitions>
+                                            <Border Width="60" Height="15" 
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            BorderBrush="Transparent" 
+                                            Grid.Row="0" Margin="0,0,0,2">
+                                                <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                            </Border>
+                                            <Border Name ="SelectMarker" Grid.Row="1"
+                                                Margin="1,0,1,1"
+                                                Width="30"
+                                                Height="5"
+                                                CornerRadius="3"
+                                                Background="{TemplateBinding Background}" 
+                                                ></Border>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </RadioButton.Template>
+                            </RadioButton>
+
+                            <RadioButton Content="Manual"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="FSGMode"
+                                     Foreground="White"
+                                     Grid.Row="1" Grid.Column="1">
+                                <RadioButton.Style>
+                                    <Style TargetType="RadioButton">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="Background" Value="#ff004c"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#600000"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </RadioButton.Style>
+                                <RadioButton.Template>
+                                    <ControlTemplate TargetType="RadioButton">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition Height="7"/>
+                                            </Grid.RowDefinitions>
+                                            <Border Width="60" Height="15" 
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            BorderBrush="Transparent" 
+                                            Grid.Row="0" Margin="0,0,0,2">
+                                                <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                            </Border>
+                                            <Border Name ="SelectMarker" Grid.Row="1"
+                                                Margin="1,0,1,1"
+                                                Width="30"
+                                                Height="5"
+                                                CornerRadius="3"
+                                                Background="{TemplateBinding Background}" 
+                                                ></Border>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </RadioButton.Template>
+                            </RadioButton>
+
+                            <RadioButton Content="100% speed"
+                                     FontFamily="Trebuchet MS"
+                                     FontSize="12"
+                                     Margin="2,2,2,2"
+                                     x:Name="RunningLineMode"
+                                     Foreground="White"
+                                     Grid.Row="1" Grid.Column="2">
+                                <RadioButton.Style>
+                                    <Style TargetType="RadioButton">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="Background" Value="#ff004c"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#600000"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </RadioButton.Style>
+                                <RadioButton.Template>
+                                    <ControlTemplate TargetType="RadioButton">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition Height="7"/>
+                                            </Grid.RowDefinitions>
+                                            <Border Width="60" Height="15" 
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            BorderBrush="Transparent" 
+                                            Grid.Row="0" Margin="0,0,0,2">
+                                                <ContentPresenter 
+                                            VerticalAlignment="Bottom" 
+                                            HorizontalAlignment="Center"/>
+                                            </Border>
+                                            <Border Name ="SelectMarker" Grid.Row="1"
+                                                Margin="1,0,1,1"
+                                                Width="30"
+                                                Height="5"
+                                                CornerRadius="3"
+                                                Background="{TemplateBinding Background}" 
+                                                ></Border>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </RadioButton.Template>
+                            </RadioButton>
+                        </Grid>
+
+                        <Grid Grid.Column="1" Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="18">
+                            </RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Slider x:Name ="ManualSpeedSetting_slider" Template="{StaticResource Slider}" Width="Auto" Minimum="0" Maximum="255" Value="100" Grid.Row="0" Grid.ColumnSpan="2" Margin="2,0,2,0"/>
+                        <TextBlock
+                            Text="0%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Left"
+                        Margin="5,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            Text="100%"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="5,0,5,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                    </Grid>
+                        <Grid Grid.Column="1" Grid.Row="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="18">
+                                </RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Slider x:Name ="Hysterrsis" Template="{StaticResource Slider}" Width="Auto" Minimum="0" Maximum="50" Value="25" Grid.Row="0" Grid.ColumnSpan="2" Margin="2,0,2,0"/>
+                            <TextBlock
+                            Text="0 degrees (instant speed drop)"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Left"
+                        Margin="5,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                            <TextBlock
+                            Text="5.0 degrees"
+                            FontSize="12" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="5,0,5,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                        </Grid>
+                    </Grid>
+                </Border>
+                <Border Margin="5,10,5,7" Width="750" Height="Auto" CornerRadius="10" Background="#333333">
+                    <Grid x:Name="FanDescription">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="230"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock 
+                        Text="Selected fan preset description" 
+                        Margin="8,2,0,0" 
+                        FontSize="15" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="White" 
+                        Grid.Column="0" 
+                        Grid.Row="0"></TextBlock>
+                        <TextBlock
+                            Text="Selected mode:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            Text="Description:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            />
+                        <TextBlock
+                            Text="Target temp/speed:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="3"
+                            />
+                        
+                        
+                        <TextBlock
+                            x:Name="Selected_mode_label"
+                            Text="%SelectedMode%"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            x:Name="Selected_mode_description_label"
+                            Text="%SelectedModeDescription%"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            />
+                        <Grid Grid.Column="1" Grid.Row="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                            Text="Minimal RPM at:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            />
+                            <TextBlock
+                                x:Name="MinDeg"
+                            Text="%Min_Deg%"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            />
+                            <TextBlock
+                            Text="Maximal RPM at:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="2"
+                            Grid.Row="0"
+                            />
+                            <TextBlock
+                                x:Name="MaxDeg"
+                            Text="%Max_Deg%"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="3"
+                            />
+                        </Grid>
+                    </Grid>
+                </Border>
+            </StackPanel>
+            </ScrollViewer>
+        </Border>
 </Page>
