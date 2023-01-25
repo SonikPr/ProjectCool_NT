@@ -47,6 +47,32 @@ namespace ProjectCool_NT
             }
             PageContainer.Navigate(new System.Uri("Pages/Dashboard.xaml", UriKind.RelativeOrAbsolute));
         }
+        string project_folder;
+        string IO_files_folder;
+        string settings_folder;
+
+
+        private void DirectoryandFilesCheckup()//DocumentsFolderSetup
+        {
+
+            project_folder = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "\\ProjectCool NT";
+            IO_files_folder = project_folder + "\\IO_files";
+            settings_folder = project_folder + "\\settings";
+
+            if (!Directory.Exists(project_folder))
+            {
+                Directory.CreateDirectory(project_folder);
+            }
+            if (!Directory.Exists(IO_files_folder))
+            {
+                Directory.CreateDirectory(IO_files_folder);
+            }
+            if (!Directory.Exists(settings_folder))
+            {
+                Directory.CreateDirectory(settings_folder);
+            }
+
+        }
 
         private void TaskbarClick(object sender, RoutedEventArgs e)
         {
@@ -91,21 +117,9 @@ namespace ProjectCool_NT
             }
         }
 
-        int[] SensorValues = new int[6]; 
-        int value = 0;
         void timer_Tick(object sender, EventArgs e)
         {
-            SensorValues[0] = value;
-            SensorValues[1] = value;
-            SensorValues[2] = value;
-            SensorValues[3] = value;
-            SensorValues[4] = value;
-            SensorValues[5] = value;
-            if (value++ > 99)
-            {
-                value = 0;
-            }
-            TransferSensorData();
+\
         }
 
         void TransferSensorData()
