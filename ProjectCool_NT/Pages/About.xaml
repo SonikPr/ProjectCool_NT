@@ -8,7 +8,531 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="About">
 
-    <Border>
-        <TextBlock Text="About" Foreground="White"></TextBlock>
+    <Border Background="#262626" CornerRadius="10" >
+        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+            <StackPanel>
+                <TextBlock Text="About" Margin="10,2,0,0" FontSize="20" FontWeight="Medium" FontFamily="Trebuchet MS" Foreground="White"/>
+                <Border Margin="5,2,5,7" Width="750" Height="Auto" CornerRadius="10" Background="#333333">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="170"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock 
+                        Text="Hardware info" 
+                        Margin="8,2,0,0" 
+                        FontSize="15" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="White" 
+                        Grid.Column="0" 
+                        Grid.Row="0"></TextBlock>
+                        <TextBlock
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Text="Information about your ProjectCool hardware"
+                        FontSize="10" 
+                        FontWeight="Light" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="0,2,8,0"/>
+
+                        <TextBlock
+                            Text="ProjectCool hardware:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            Text="Hardware version:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            />
+
+                        <TextBlock
+                            Text="Software version:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="3"
+                            />
+
+                        <TextBlock
+                            Text="Software version:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="4"
+                            />
+
+                        <TextBlock
+                            x:Name="HardwareCodename"
+                            Text="%HardwareCodename%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            x:Name="HardwareVersion"
+                            Text="%HardwareVersion%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            />
+                        <TextBlock
+                            x:Name="SoftwareCodename"
+                            Text="%SoftwareCodemane%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="3"
+                            />
+
+                    </Grid>
+                </Border>
+
+                <Border Margin="5,2,5,7" Width="750" Height="Auto" CornerRadius="10" Background="#333333">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="210"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock 
+                        Text="Hardware characteristics" 
+                        Margin="8,2,0,0" 
+                        FontSize="15" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="White" 
+                        Grid.Column="0" 
+                        Grid.Row="0"></TextBlock>
+                        <TextBlock
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Text="Characteristics of your ProjectCool hardware"
+                        FontSize="10" 
+                        FontWeight="Light" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="0,2,8,0"/>
+
+                        <TextBlock
+                            Text="Fan connection:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+
+                        <TextBlock
+                            Text="Maximum fan count support:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            />
+
+                        <TextBlock
+                            Text="Connected fans:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="3"
+                            />
+
+                        <TextBlock
+                            Text="Fan tachometer type:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="4"
+                            />
+
+                        <TextBlock
+                            Text="Temp sensor type:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="5"
+                            />
+
+                        <TextBlock
+                            Text="Fan PWM rate:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="6"
+                            />
+
+                        <TextBlock
+                            Text="Connected LEDS:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="7"
+                            />
+
+                        <TextBlock
+                            Text="LED type:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="8"
+                            />
+
+                        <TextBlock
+                            x:Name="FanConnction"
+                            Text="%FC%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            x:Name="MaximumFanSupport"
+                            Text="%MFS%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            />
+                        <TextBlock
+                            x:Name="ConnectedFans"
+                            Text="%CF%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="3"
+                            />
+                        <TextBlock
+                            x:Name="FanTachoType"
+                            Text="%FTT%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="4"
+                            />
+                        <TextBlock
+                            x:Name="TempSensorType"
+                            Text="%TST%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="5"
+                            />
+                        <TextBlock
+                            x:Name="FanPWMRate"
+                            Text="%FPWMR%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="6"
+                            />
+                        <TextBlock
+                            x:Name="ConnectedLEDs"
+                            Text="%CLED%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="7"
+                            />
+                        <TextBlock
+                            x:Name="LEDtype"
+                            Text="%LEDT%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="8"
+                            />
+
+                    </Grid>
+                </Border>
+
+                <Border Margin="5,2,5,7" Width="750" Height="Auto" CornerRadius="10" Background="#333333">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="210"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock 
+                        Text="Software info" 
+                        Margin="8,2,0,0" 
+                        FontSize="15" 
+                        FontWeight="Medium" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="White" 
+                        Grid.Column="0" 
+                        Grid.Row="0"></TextBlock>
+                        <TextBlock
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Text="About this software"
+                        FontSize="10" 
+                        FontWeight="Light" 
+                        FontFamily="Trebuchet MS" 
+                        Foreground="#858585"
+                        HorizontalAlignment="Right"
+                        Margin="0,2,8,0"/>
+
+                        <TextBlock
+                            Text="ProjectCool desktop ver:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            />
+
+                        <TextBlock
+                            Text="Codename:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            />
+
+                        <TextBlock
+                            Text="Suported products:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="3"
+                            />
+                        <TextBlock
+                            Text="Credits:"
+                            FontSize="15" 
+                        FontWeight="ExtraLight" 
+                        FontFamily="Open Sans" 
+                        Foreground="White"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,5"
+                            Grid.Column="0"
+                            Grid.Row="4"
+                            />
+
+
+
+                        <TextBlock
+                            x:Name="PCver"
+                            Text="%PCVer%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            />
+                        <TextBlock
+                            x:Name="Codename"
+                            Text="%CDN%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            />
+                        <TextBlock
+                            x:Name="SupportedProducts"
+                            Text="%SP%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="3"
+                            />
+                        <TextBlock
+                            x:Name="Credits"
+                            Text="%CRDTS%"
+                            FontSize="15" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="White"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,5"
+                            Grid.Column="1"
+                            Grid.Row="4"
+                            />
+
+
+
+
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
     </Border>
 </Page>
