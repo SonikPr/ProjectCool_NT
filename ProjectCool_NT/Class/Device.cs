@@ -12,6 +12,10 @@ namespace ProjectCool_NT.Class
 {
     class Device : Fan
     {
+        const string ProgramSettingsFile = "programsettings.config";
+        const string DeviceSettings = "DeviceSettings.config";
+        const string DeviceSensorData = "SensorData.sensors";
+
 
         SerialPort MainPort = new SerialPort();
         const int BaudRate = 9600;
@@ -322,7 +326,7 @@ namespace ProjectCool_NT.Class
             SensorValues[1] = chassis_humidity;
             SensorValues[2] = ProgramFanSpeed;
             SensorValues[3] = TachoFanSpeed;
-            using (StreamWriter SensorData = new StreamWriter(IO_files_folder +"/SensorData.sensors", false))
+            using (StreamWriter SensorData = new StreamWriter(IO_files_folder + "\\" + DeviceSensorData, false))
             {
                 for (int i = 0; i < SensorValues.Length; i++)
                 {
@@ -336,7 +340,7 @@ namespace ProjectCool_NT.Class
         private Stack<string> AllSensors = new Stack<string>();
         private void PC1RestoreSensorData()
         {
-            string file = IO_files_folder + "/SensorData.sensors";
+            string file = IO_files_folder + "\\" + DeviceSensorData;
             if (File.Exists(file))
             {
                 string NewData;
@@ -373,7 +377,7 @@ namespace ProjectCool_NT.Class
             SettingsValues[8] = BreatheSpeed;
             SettingsValues[9] = variable_brightness_mode;
             SettingsValues[10] = variable_brightness_value;
-            using (StreamWriter SensorData = new StreamWriter(IO_files_folder + "/DeviceSettingsData.settings", false))
+            using (StreamWriter SensorData = new StreamWriter(IO_files_folder + "\\" + DeviceSettings, false))
             {
                 for (int i = 0; i < SettingsValues.Length; i++)
                 {
@@ -386,7 +390,7 @@ namespace ProjectCool_NT.Class
         private Stack<string> AllSettings = new Stack<string>();
         private void PC1RestoreSettingsData() 
         {
-            string file = IO_files_folder + "/DeviceSettingsData.settings";
+            string file = IO_files_folder + "\\" + DeviceSettings;
             if (File.Exists(file))
             {
                 string NewData;
@@ -417,7 +421,7 @@ namespace ProjectCool_NT.Class
             string[] SettingsValues = new string[2];
             SettingsValues[0] = device_port;
             SettingsValues[1] = update_rate.ToString();
-            using (StreamWriter SensorData = new StreamWriter(settings_folder + "/programsettings.config", false))
+            using (StreamWriter SensorData = new StreamWriter(settings_folder + "\\" + ProgramSettingsFile, false))
             {
                 for (int i = 0; i < SettingsValues.Length; i++)
                 {
@@ -430,7 +434,7 @@ namespace ProjectCool_NT.Class
         private Stack<string> ProgramSettings = new Stack<string>();
         private void RestoreSoftwareSettings()
         {
-            string file = settings_folder + "/programsettings.config";
+            string file = settings_folder + "\\" + ProgramSettingsFile;
             if (File.Exists(file))
             {
                 string NewData;
