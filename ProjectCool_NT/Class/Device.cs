@@ -100,13 +100,10 @@ namespace ProjectCool_NT.Class
             if (DirectoryAndFilesCheckup())
             {
                 RestoreSoftwareSettings();
-                if (device_port.Contains("COM"))
-                {
                     if (CreateSerial(9600, device_port) != "OK")
                     {
                         goto Error;
                     }
-                }
             }
             else
             {
