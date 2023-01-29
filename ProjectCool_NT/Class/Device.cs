@@ -33,7 +33,7 @@ namespace ProjectCool_NT.Class
         private string settings_folder;
 
 
-        private void DirectoryAndFilesCheckup()//DocumentsFolderSetup
+        private bool DirectoryAndFilesCheckup()//DocumentsFolderSetup
         {
 
             project_folder = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "\\ProjectCool NT";
@@ -43,6 +43,7 @@ namespace ProjectCool_NT.Class
             if (!Directory.Exists(project_folder))
             {
                 Directory.CreateDirectory(project_folder);
+                return false;
             }
             if (!Directory.Exists(IO_files_folder))
             {
@@ -51,7 +52,15 @@ namespace ProjectCool_NT.Class
             if (!Directory.Exists(settings_folder))
             {
                 Directory.CreateDirectory(settings_folder);
+                return false;
             }
+            if(!File.Exists(settings_folder + "/programsettings.config"))
+            {
+                return false;
+            }
+
+
+            return true;
 
         }
 
@@ -84,8 +93,20 @@ namespace ProjectCool_NT.Class
 
         public void CreateDevice() //Automatic device search
         {
-            Thread CheckDeviceAvailability = new Thread(this.AutoDeviceSearch);
-            CheckDeviceAvailability.Start();
+            if (DirectoryAndFilesCheckup())
+            {
+                RestoreSoftwareSettings();
+                if (device_port.Contains("COM"))
+                {
+                    CreateSerial(9600, device_port);
+                }
+            }
+            else
+            {
+
+                Thread CheckDeviceAvailability = new Thread(this.AutoDeviceSearch);
+                CheckDeviceAvailability.Start();
+            }
         }
 
         public int UpdateRate
@@ -138,7 +159,7 @@ namespace ProjectCool_NT.Class
                     this.StopSerial();
                 }
             }
-
+            SaveSoftwareSettings();
         }
 
         public string[] AvailablePorts
@@ -301,7 +322,7 @@ namespace ProjectCool_NT.Class
             SensorValues[1] = chassis_humidity;
             SensorValues[2] = ProgramFanSpeed;
             SensorValues[3] = TachoFanSpeed;
-            using (StreamWriter SensorData = new StreamWriter(IO_files_folder +"SensorData.sensors", false))
+            using (StreamWriter SensorData = new StreamWriter(IO_files_folder +"/SensorData.sensors", false))
             {
                 for (int i = 0; i < SensorValues.Length; i++)
                 {
@@ -315,7 +336,7 @@ namespace ProjectCool_NT.Class
         private Stack<string> AllSensors = new Stack<string>();
         private void PC1RestoreSensorData()
         {
-            string file = IO_files_folder + "SensorData.sensors";
+            string file = IO_files_folder + "/SensorData.sensors";
             if (File.Exists(file))
             {
                 string NewData;
@@ -352,7 +373,7 @@ namespace ProjectCool_NT.Class
             SettingsValues[8] = BreatheSpeed;
             SettingsValues[9] = variable_brightness_mode;
             SettingsValues[10] = variable_brightness_value;
-            using (StreamWriter SensorData = new StreamWriter(IO_files_folder + "DeviceSettingsData.settings", false))
+            using (StreamWriter SensorData = new StreamWriter(IO_files_folder + "/DeviceSettingsData.settings", false))
             {
                 for (int i = 0; i < SettingsValues.Length; i++)
                 {
@@ -365,7 +386,7 @@ namespace ProjectCool_NT.Class
         private Stack<string> AllSettings = new Stack<string>();
         private void PC1RestoreSettingsData() 
         {
-            string file = IO_files_folder + "DeviceSettingsData.settings";
+            string file = IO_files_folder + "/DeviceSettingsData.settings";
             if (File.Exists(file))
             {
                 string NewData;
@@ -396,7 +417,7 @@ namespace ProjectCool_NT.Class
             string[] SettingsValues = new string[2];
             SettingsValues[0] = device_port;
             SettingsValues[1] = update_rate.ToString();
-            using (StreamWriter SensorData = new StreamWriter(settings_folder + "programsettings.config", false))
+            using (StreamWriter SensorData = new StreamWriter(settings_folder + "/programsettings.config", false))
             {
                 for (int i = 0; i < SettingsValues.Length; i++)
                 {
@@ -409,7 +430,7 @@ namespace ProjectCool_NT.Class
         private Stack<string> ProgramSettings = new Stack<string>();
         private void RestoreSoftwareSettings()
         {
-            string file = settings_folder + "programsettings.config";
+            string file = settings_folder + "/programsettings.config";
             if (File.Exists(file))
             {
                 string NewData;
@@ -417,12 +438,12 @@ namespace ProjectCool_NT.Class
                 {
                     while ((NewData = DatabaseFetcher.ReadLine()) != null)
                     {
-                        AllSensors.Push(NewData);
+                        ProgramSettings.Push(NewData);
                     }
                 }
-            }
-            update_rate = Convert.ToInt32(ProgramSettings.Pop()); 
-            device_port = AllSensors.Pop();
+                update_rate = Convert.ToInt32(ProgramSettings.Pop());
+                device_port = ProgramSettings.Pop();
+            }   
         }
 
 

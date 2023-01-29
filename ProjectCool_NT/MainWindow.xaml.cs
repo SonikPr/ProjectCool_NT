@@ -100,7 +100,7 @@ namespace ProjectCool_NT
         void timer_Tick(object sender, EventArgs e)
         {
             SensorValues = new int[4];
-            ProjectCoolDevice.GetSensorData();
+         //   ProjectCoolDevice.GetSensorData();
             SensorValues[0] = ProjectCoolDevice.chassis_temp;
             SensorValues[1] = ProjectCoolDevice.chassis_humidity;
             SensorValues[2] = ProjectCoolDevice.ProgramFanSpeed;
