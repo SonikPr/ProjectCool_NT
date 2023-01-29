@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
@@ -19,6 +19,11 @@
     <None Remove="Pages\HUE2.png" />
     <None Remove="Pages\SAT.jpg" />
     <None Remove="Pages\slider_transparent.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO" Version="4.3.0" />
+    <PackageReference Include="System.IO.Ports" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>

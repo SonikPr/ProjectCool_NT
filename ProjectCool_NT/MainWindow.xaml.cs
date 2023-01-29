@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.IO;
+using System.Threading;
 
 namespace ProjectCool_NT
 {
@@ -22,12 +23,14 @@ namespace ProjectCool_NT
     /// </summary>
     public partial class MainWindow : Window
     {
+        Class.Device ProjectCoolDevice = new Class.Device();
         public MainWindow()
         {
             InitializeComponent();
 
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(200);
+            
+            timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += timer_Tick;
             timer.Start();
             foreach (UIElement Button in UpperMenuGrid.Children)
@@ -46,33 +49,9 @@ namespace ProjectCool_NT
                 }
             }
             PageContainer.Navigate(new System.Uri("Pages/Dashboard.xaml", UriKind.RelativeOrAbsolute));
+            ProjectCoolDevice.CreateDevice();    
         }
-        string project_folder;
-        string IO_files_folder;
-        string settings_folder;
-
-
-        private void DirectoryandFilesCheckup()//DocumentsFolderSetup
-        {
-
-            project_folder = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "\\ProjectCool NT";
-            IO_files_folder = project_folder + "\\IO_files";
-            settings_folder = project_folder + "\\settings";
-
-            if (!Directory.Exists(project_folder))
-            {
-                Directory.CreateDirectory(project_folder);
-            }
-            if (!Directory.Exists(IO_files_folder))
-            {
-                Directory.CreateDirectory(IO_files_folder);
-            }
-            if (!Directory.Exists(settings_folder))
-            {
-                Directory.CreateDirectory(settings_folder);
-            }
-
-        }
+        
 
         private void TaskbarClick(object sender, RoutedEventArgs e)
         {
@@ -117,9 +96,16 @@ namespace ProjectCool_NT
             }
         }
 
+        int[] SensorValues;
         void timer_Tick(object sender, EventArgs e)
         {
-\
+            SensorValues = new int[4];
+            ProjectCoolDevice.GetSensorData();
+            SensorValues[0] = ProjectCoolDevice.chassis_temp;
+            SensorValues[1] = ProjectCoolDevice.chassis_humidity;
+            SensorValues[2] = ProjectCoolDevice.ProgramFanSpeed;
+            SensorValues[3] = ProjectCoolDevice.TachoFanSpeed;
+            TransferSensorData();
         }
 
         void TransferSensorData()
@@ -130,6 +116,7 @@ namespace ProjectCool_NT
                 {
                     SensorData.WriteLine(SensorValues[i]);
                 }
+                
             }
         }
 

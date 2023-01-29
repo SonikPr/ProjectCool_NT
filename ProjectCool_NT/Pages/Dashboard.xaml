@@ -107,7 +107,7 @@
                         </Grid.ColumnDefinitions>
                         <ProgressBar 
                         x:Name="CaseTemp"
-                        Value="71" 
+                        Value="50" 
                         Tag="35.0" 
                         Maximum="100" 
                         Margin="5"

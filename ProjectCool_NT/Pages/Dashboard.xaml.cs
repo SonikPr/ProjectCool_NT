@@ -31,24 +31,48 @@ namespace ProjectCool_NT.Pages
         int FanSpeedValue;
         void UpdateData(object sender, EventArgs e)
         {
+
             RecieveSensorData();
-            Brightness.Value = Convert.ToInt32(SensorsData.Pop());
-            FanRPM.Value = Convert.ToInt32(SensorsData.Pop());
-            FanCFM.Value = Convert.ToInt32(SensorsData.Pop());
-            FanSpeed.Value = Convert.ToInt32(SensorsData.Pop());
-            CaseHumidity.Value = Convert.ToInt32(SensorsData.Pop());
-            CaseTemp.Value = Convert.ToInt32(SensorsData.Pop());
+            if (SensorsData.Count > 0)
+            {
+                int fan_rpm = Convert.ToInt32(SensorsData.Pop()); ;
+                int fan_speed = Convert.ToInt32(SensorsData.Pop()) ;
+                double humidity = Convert.ToDouble(SensorsData.Pop());
+                double temp = Convert.ToDouble(SensorsData.Pop());
+
+                humidity = humidity / 10;
+                temp = temp / 10;
+
+                FanRPM.Value = fan_rpm;
+                FanRPM.Tag = map(fan_rpm,0,100,0,1100).ToString();
+                FanSpeed.Value = fan_speed;
+                FanSpeed.Tag = fan_speed.ToString();
+                CaseHumidity.Value = (int)humidity;
+                CaseHumidity.Tag = humidity.ToString();
+                CaseTemp.Value = map((int)temp,20,50,0,100);
+                CaseTemp.Tag = temp.ToString();   
+                SensorsData.Clear();
+            }
+        }
+
+        int map(int x, int in_min, int in_max, int out_min, int out_max)
+        {
+            return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
         }
 
         private Stack<string> SensorsData = new Stack<string>();
         void RecieveSensorData()
         {
-            string NewData;
-            using (StreamReader DatabaseFetcher = new StreamReader("SensorData.sensors"))
+            string file = "SensorData.sensors";
+            if (File.Exists(file))
             {
-                while ((NewData = DatabaseFetcher.ReadLine()) != null)
+                string NewData;
+                using (StreamReader DatabaseFetcher = new StreamReader("SensorData.sensors"))
                 {
-                    SensorsData.Push(NewData);
+                    while ((NewData = DatabaseFetcher.ReadLine()) != null)
+                    {
+                        SensorsData.Push(NewData);
+                    }
                 }
             }
         }
