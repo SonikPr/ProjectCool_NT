@@ -102,15 +102,21 @@ namespace ProjectCool_NT.Class
                 RestoreSoftwareSettings();
                 if (device_port.Contains("COM"))
                 {
-                    CreateSerial(9600, device_port);
+                    if (CreateSerial(9600, device_port) != "OK")
+                    {
+                        goto Error;
+                    }
                 }
             }
             else
             {
-
-                Thread CheckDeviceAvailability = new Thread(this.AutoDeviceSearch);
-                CheckDeviceAvailability.Start();
+                goto Error;
+                
             }
+            Error:
+            Thread CheckDeviceAvailability = new Thread(this.AutoDeviceSearch);
+            CheckDeviceAvailability.Start();
+
         }
 
         public int UpdateRate
@@ -182,6 +188,7 @@ namespace ProjectCool_NT.Class
                 MainPort.PortName = port_name;
                 MainPort.BaudRate = BaudRates;
                 MainPort.Open();
+                DeviceConnected = true;
                 return "OK";
 
             }
