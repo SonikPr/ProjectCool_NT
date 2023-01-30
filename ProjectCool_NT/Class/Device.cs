@@ -21,7 +21,6 @@ namespace ProjectCool_NT.Class
         const int BaudRate = 9600;
         private string device_model;
         private string device_firmware;
-        private string device_hardware_version;
         private string device_port;
         private int update_rate;
         private string[] ports;
@@ -97,22 +96,31 @@ namespace ProjectCool_NT.Class
 
         public void CreateDevice() //Automatic device search
         {
+            bool errflag = false;
             if (DirectoryAndFilesCheckup())
             {
                 RestoreSoftwareSettings();
                     if (CreateSerial(9600, device_port) != "OK")
                     {
-                        goto Error;
+                    errflag= true;
+                        goto OnPortError;
                     }
             }
             else
             {
-                goto Error;
-                
+                errflag= true;
+                goto OnPortError; 
             }
-            Error:
-            Thread CheckDeviceAvailability = new Thread(this.AutoDeviceSearch);
-            CheckDeviceAvailability.Start();
+
+        OnPortError:
+            if (errflag)
+            {
+                Thread CheckDeviceAvailability = new Thread(this.AutoDeviceSearch);
+                CheckDeviceAvailability.Start();
+            }
+            
+            Thread.Sleep(1000);
+
 
         }
 
@@ -149,6 +157,7 @@ namespace ProjectCool_NT.Class
                         {
                             device_port = ports[i];
                             DeviceConnected = true;
+                            GetDeviceInfo();
                             break;
                         }
                         if (PortError_count++ > 10)
@@ -185,7 +194,7 @@ namespace ProjectCool_NT.Class
                 MainPort.PortName = port_name;
                 MainPort.BaudRate = BaudRates;
                 MainPort.Open();
-                DeviceConnected = true;
+                DeviceConnected = true;   
                 return "OK";
 
             }
@@ -452,6 +461,21 @@ namespace ProjectCool_NT.Class
                 update_rate = Convert.ToInt32(ProgramSettings.Pop());
                 device_port = ProgramSettings.Pop();
             }   
+        }
+
+        private void GetDeviceInfo()
+        {
+            this.SendData("F");
+            string data = "0"; 
+            if (MainPort.BytesToRead > 0)
+            {
+                data = this.ReceiveData();
+                IncomingSettingsData = data.Split(';');
+                
+
+                    this.device_firmware = IncomingSettingsData[0];
+                    this.device_model = IncomingSettingsData[1];
+            }
         }
 
 
