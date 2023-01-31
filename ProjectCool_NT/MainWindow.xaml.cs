@@ -30,7 +30,7 @@ namespace ProjectCool_NT
 
             DispatcherTimer timer = new DispatcherTimer();
             
-            timer.Interval = TimeSpan.FromMilliseconds(500);
+            timer.Interval = TimeSpan.FromMilliseconds(1000);
             timer.Tick += timer_Tick;
             timer.Start();
             foreach (UIElement Button in UpperMenuGrid.Children)
@@ -68,6 +68,7 @@ namespace ProjectCool_NT
 
         private void Shutdown()//This will be used in future to secure port closing, saving all the setings and safe app shutdown
         {
+            ProjectCoolDevice.DeleteDevice();
             App.Current.Shutdown();
         }
 

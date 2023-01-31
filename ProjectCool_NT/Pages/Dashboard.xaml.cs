@@ -20,25 +20,25 @@ namespace ProjectCool_NT.Pages
     /// </summary>
     public partial class Dashboard : Page
     {
+        Class.Device ProjectCoolDevice = new Class.Device();
         public Dashboard()
         {
             InitializeComponent();
             DispatcherTimer UpdateDataTimer = new DispatcherTimer();
             UpdateDataTimer.Interval = TimeSpan.FromMilliseconds(100);
             UpdateDataTimer.Tick += UpdateData;
+            ProjectCoolDevice.LoadDevice();
             UpdateDataTimer.Start();
         }
         int FanSpeedValue;
         void UpdateData(object sender, EventArgs e)
         {
-
-            RecieveSensorData();
-            if (SensorsData.Count > 0)
-            {
-                int fan_rpm = Convert.ToInt32(SensorsData.Pop()); ;
-                int fan_speed = Convert.ToInt32(SensorsData.Pop()) ;
-                double humidity = Convert.ToDouble(SensorsData.Pop());
-                double temp = Convert.ToDouble(SensorsData.Pop());
+                ProjectCoolDevice.RestoreSensor();
+                int fan_rpm = ProjectCoolDevice.TachoFanSpeed;
+                //int fan_rpm = Convert.ToInt32(SensorsData.Pop()); 
+                int fan_speed = ProjectCoolDevice.ProgramFanSpeed;
+                double humidity = ProjectCoolDevice.chassis_humidity;
+                double temp = ProjectCoolDevice.chassis_temp;
 
                 humidity = humidity / 10;
                 temp = temp / 10;
@@ -51,8 +51,6 @@ namespace ProjectCool_NT.Pages
                 CaseHumidity.Tag = humidity.ToString();
                 CaseTemp.Value = map((int)temp,20,50,0,100);
                 CaseTemp.Tag = temp.ToString();   
-                SensorsData.Clear();
-            }
         }
 
         int map(int x, int in_min, int in_max, int out_min, int out_max)
@@ -60,21 +58,5 @@ namespace ProjectCool_NT.Pages
             return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
         }
 
-        private Stack<string> SensorsData = new Stack<string>();
-        void RecieveSensorData()
-        {
-            string file = "SensorData.sensors";
-            if (File.Exists(file))
-            {
-                string NewData;
-                using (StreamReader DatabaseFetcher = new StreamReader("SensorData.sensors"))
-                {
-                    while ((NewData = DatabaseFetcher.ReadLine()) != null)
-                    {
-                        SensorsData.Push(NewData);
-                    }
-                }
-            }
-        }
     }
 }

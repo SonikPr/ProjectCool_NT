@@ -18,6 +18,7 @@ namespace ProjectCool_NT.Class
         const string ProgramSettingsFile = "programsettings.config";
         const string DeviceSettings = "DeviceSettings.config";
         const string DeviceSensorData = "SensorData.sensors";
+        const string CurrentDevice = "CurrentDevice.config";
         const int BaudRate = 9600;
 
         private string device_model = "";
@@ -116,6 +117,7 @@ namespace ProjectCool_NT.Class
                 errflag= true;
                 goto OnPortError; 
             }
+            SaveDevice();
 
         OnPortError:
             if (errflag)
@@ -159,7 +161,6 @@ namespace ProjectCool_NT.Class
                         if (this.ReceiveData().Contains("PC"))
                         {
                             device_port = ports[i];
-                            DeviceConnected = true;
                             break;
                         }
                         if (PortError_count++ > 5)
@@ -178,7 +179,7 @@ namespace ProjectCool_NT.Class
                     this.StopSerial();
                 }
             }
-            SaveSoftwareSettings();
+            SaveDevice();
         }
 
         public string[] AvailablePorts
@@ -196,8 +197,7 @@ namespace ProjectCool_NT.Class
             {
                 MainPort.PortName = port_name;
                 MainPort.BaudRate = BaudRate;
-                MainPort.Open();
-                DeviceConnected = true;   
+                MainPort.Open();   
                 return "OK";
 
             }
@@ -487,12 +487,76 @@ namespace ProjectCool_NT.Class
                 device_port = ProgramSettings.Pop();
             }   
         }
+
+        private void SaveCurrentDeviceInfo()
+        {
+            string[] SettingsValues = new string[2];
+            SettingsValues[0] = device_model;
+            SettingsValues[1] = device_firmware;
+            using (StreamWriter SensorData = new StreamWriter(IO_files_folder + "\\" + CurrentDevice, false))
+            {
+                for (int i = 0; i < SettingsValues.Length; i++)
+                {
+                    SensorData.WriteLine(SettingsValues[i]);
+                }
+
+            }
+        }
+
+        private Stack<string> CurrentDeviceInfo = new Stack<string>();
+        private void RestoreCurrentDeviceInfo()
+        {
+            string file = IO_files_folder + "\\" + CurrentDevice;
+            if (File.Exists(file))
+            {
+                string NewData;
+                using (StreamReader DatabaseFetcher = new StreamReader(file))
+                {
+                    while ((NewData = DatabaseFetcher.ReadLine()) != null)
+                    {
+                        CurrentDeviceInfo.Push(NewData);
+                    }
+                }
+                device_firmware = CurrentDeviceInfo.Pop();
+                device_model = CurrentDeviceInfo.Pop();
+            }
+        }
+
         private void InitialSetup()
         {
             GetDeviceInfo();
             GetSensors();
             GetSettings();
         }
+
+        public void SaveDevice()
+        {
+            this.GetDeviceInfo();
+            this.GetSensors(); 
+            this.GetSettings();
+            this.SaveCurrentDeviceInfo();
+            this.SaveSoftwareSettings();
+            DeviceConnected = true;
+        }
+
+        public void LoadDevice() 
+        {
+            this.DirectoryAndFilesCheckup();
+            this.RestoreCurrentDeviceInfo();
+            this.RestoreSettings();
+            this.RestoreSoftwareSettings();
+            this.RestoreSensor();    
+        }
+
+        public void DeleteDevice()
+        {
+            if (Directory.Exists(IO_files_folder))
+            {
+                Directory.Delete(IO_files_folder, true);
+            }
+        }
+
+
 
         public void GetSensors()
         {
@@ -507,6 +571,22 @@ namespace ProjectCool_NT.Class
                 case "PC1.0":
                     PC1GetSensorData();
                     PC1SaveSensorData();
+                    break;
+            }
+        }
+
+        public void GetSettings()
+        {
+            if (!device_model.Contains("PC") && DeviceConnected)
+            {
+                InitialSetup();
+            }
+
+            switch (device_model)
+            {
+                case "PC1.0":
+                    PC1GetSettings();
+                    PC1SaveSettingsData();
                     break;
             }
         }
@@ -528,11 +608,7 @@ namespace ProjectCool_NT.Class
 
         public void RestoreSensor()
         {
-            if (!device_model.Contains("PC") && DeviceConnected)
-            {
-                InitialSetup();
-            }
-
+           
             switch (device_model)
             {
                 case "PC1.0":
@@ -543,11 +619,7 @@ namespace ProjectCool_NT.Class
 
         public void RestoreSettings()
         {
-            if (!device_model.Contains("PC") && DeviceConnected)
-            {
-                InitialSetup();
-            }
-
+            
             switch (device_model)
             {
                 case "PC1.0":
@@ -556,21 +628,6 @@ namespace ProjectCool_NT.Class
             }
         }
 
-        public void GetSettings()
-        {
-            if (!device_model.Contains("PC") && DeviceConnected)
-            {
-                InitialSetup();
-            }
-
-            switch (device_model)
-            {
-                case "PC1.0":
-                    PC1GetSettings();
-                    PC1SaveSettingsData();
-                    break;
-            }
-        }
 
         public void FlashToDevice()
         {
