@@ -7,20 +7,21 @@ using System.Threading.Tasks;
 using System.IO.Ports;
 using System.IO;
 using System.Security.Cryptography;
+using System.Diagnostics.PerformanceData;
+using System.Windows.Controls;
 
 namespace ProjectCool_NT.Class
 {
     class Device : Fan
     {
+        SerialPort MainPort = new SerialPort();
         const string ProgramSettingsFile = "programsettings.config";
         const string DeviceSettings = "DeviceSettings.config";
         const string DeviceSensorData = "SensorData.sensors";
-
-
-        SerialPort MainPort = new SerialPort();
         const int BaudRate = 9600;
-        private string device_model;
-        private string device_firmware;
+
+        private string device_model = "";
+        private string device_firmware = "";
         private string device_port;
         private int update_rate;
         private string[] ports;
@@ -29,16 +30,16 @@ namespace ProjectCool_NT.Class
         private int[] SettingsData = new int[13];
         private string[] IncomingSensorData = new string[13];
         private string[] IncomingSettingsData = new string[13];
-        private string[] IncomingVersionInfoData = new string[13];
         private bool DeviceConnected = false;
         private string project_folder;
         private string IO_files_folder;
         private string settings_folder;
 
 
+
         private bool DirectoryAndFilesCheckup()//DocumentsFolderSetup
         {
-
+            bool directoryabscent = false;
             project_folder = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "\\ProjectCool NT";
             IO_files_folder = project_folder + "\\IO_files";
             settings_folder = project_folder + "\\settings";
@@ -46,7 +47,7 @@ namespace ProjectCool_NT.Class
             if (!Directory.Exists(project_folder))
             {
                 Directory.CreateDirectory(project_folder);
-                return false;
+                directoryabscent = true;
             }
             if (!Directory.Exists(IO_files_folder))
             {
@@ -55,15 +56,19 @@ namespace ProjectCool_NT.Class
             if (!Directory.Exists(settings_folder))
             {
                 Directory.CreateDirectory(settings_folder);
-                return false;
+                directoryabscent = true;
             }
             if(!File.Exists(settings_folder + "/programsettings.config"))
             {
-                return false;
+                directoryabscent = true;
             }
 
-
+            if (directoryabscent)
+            {
+                return false;
+            }
             return true;
+            
 
         }
 
@@ -102,7 +107,7 @@ namespace ProjectCool_NT.Class
                 RestoreSoftwareSettings();
                     if (CreateSerial(9600, device_port) != "OK")
                     {
-                    errflag= true;
+                        errflag= true;
                         goto OnPortError;
                     }
             }
@@ -118,10 +123,8 @@ namespace ProjectCool_NT.Class
                 Thread CheckDeviceAvailability = new Thread(this.AutoDeviceSearch);
                 CheckDeviceAvailability.Start();
             }
+             
             
-            Thread.Sleep(1000);
-
-
         }
 
         public int UpdateRate
@@ -147,25 +150,25 @@ namespace ProjectCool_NT.Class
                 try
                 {
                     MainPort.PortName = ports[i];
-                    MainPort.BaudRate = 9600;
+                    MainPort.BaudRate = BaudRate;
                     MainPort.Open();
                     this.SendData("F");
                     while (true)
                     {
-                        Thread.Sleep(500);
+                        
                         if (this.ReceiveData().Contains("PC"))
                         {
                             device_port = ports[i];
                             DeviceConnected = true;
-                            GetDeviceInfo();
                             break;
                         }
-                        if (PortError_count++ > 10)
+                        if (PortError_count++ > 5)
                         {
                             this.StopSerial();
                             PortError_count= 0;
                             break;
                         }
+                        Thread.Sleep(500);
                     }
 
 
@@ -192,7 +195,7 @@ namespace ProjectCool_NT.Class
             try
             {
                 MainPort.PortName = port_name;
-                MainPort.BaudRate = BaudRates;
+                MainPort.BaudRate = BaudRate;
                 MainPort.Open();
                 DeviceConnected = true;   
                 return "OK";
@@ -219,15 +222,12 @@ namespace ProjectCool_NT.Class
             }
         }
 
-        public bool PortOpen()
-        {
-            return MainPort.IsOpen;
-        }
-
         public void SendData(string data)
         {
             if (MainPort.IsOpen)
             {
+                MainPort.DiscardInBuffer();
+                MainPort.DiscardOutBuffer();
                 MainPort.Write(data);
             }
         }
@@ -246,25 +246,30 @@ namespace ProjectCool_NT.Class
         {
             try
             {
-                return MainPort.ReadExisting().Replace(";\r\n", "") ;
+                string reply = MainPort.ReadExisting().Replace(";\r\n", "");
+                MainPort.DiscardInBuffer();
+                MainPort.DiscardOutBuffer();
+                return reply;
             }
             catch (Exception ex)
             {
-                return ex.ToString();
+                return null;
             }
         }
 
         public void PC1GetSensorData()
         {
-            if (DeviceConnected)
+            string data;
+            this.SendData("S");
+            while (true)
             {
-                this.SendData("S");
-                string data = "0";
-                if (MainPort.BytesToRead > 0)
+                if (MainPort.BytesToRead > 1)
                 {
                     data = this.ReceiveData();
+                    break;
+                }
+            }
                     IncomingSensorData = data.Split(';');
-
                     try
                     {
                         for (int i = 0; i < 4; i++) //Converting each character into 
@@ -279,26 +284,28 @@ namespace ProjectCool_NT.Class
                     }
                     catch (Exception EX)
                     {
-
                         this.ResetBuffer();
                     }
-                }
-            }
+                    PC1SaveSensorData();
         }
 
         void PC1GetSettings()
         {
-            if (DeviceConnected)
-            {
+           
+                string data;
                 this.SendData("P");
-                string data = "0";
-                if (MainPort.BytesToRead > 0)
+                while (true)
                 {
-                    data = this.ReceiveData();
-                    IncomingSettingsData = data.Split(';');
+                    if (MainPort.BytesToRead > 1)
+                    {
+                        data = this.ReceiveData();
+                        break;
+                    }
+                }
+                IncomingSettingsData = data.Split(';');
                     try
                     {
-                        for (int i = 0; i < 12; i++) //Converting each character into 
+                        for (int i = 0; i < 11; i++) //Converting each character into 
                         {
                             SettingsData[i] = Convert.ToInt32(IncomingSettingsData[i]);
                         }
@@ -320,8 +327,26 @@ namespace ProjectCool_NT.Class
 
                         this.ResetBuffer();
                     }
+                    PC1SaveSettingsData();  
+        }
+
+        private void GetDeviceInfo()
+        {
+            device_model = "";
+            string data;
+            string[] DeviceInfo = new string[2];
+            this.SendData("F");
+            while (true)
+            {
+                if (MainPort.BytesToRead > 1)
+                {
+                    data = this.ReceiveData();
+                    break;
                 }
             }
+            DeviceInfo = data.Split(';');
+            this.device_firmware = DeviceInfo[0];
+            this.device_model = DeviceInfo[1];
         }
 
         private void PC1Update()
@@ -383,7 +408,7 @@ namespace ProjectCool_NT.Class
             SettingsValues[1] = Hysteresis;
             SettingsValues[2] = ProgramFanSpeed;
             SettingsValues[3] = Mode;
-            SettingsValues[4] = Brightness;
+            SettingsValues[4] = brightness255;
             SettingsValues[5] = Hue;
             SettingsValues[6] = Sat;
             SettingsValues[7] = ColorChangeSpeed;
@@ -421,7 +446,7 @@ namespace ProjectCool_NT.Class
             this.ColorChangeSpeed = Convert.ToInt32(AllSettings.Pop());
             this.Sat = Convert.ToInt32(AllSettings.Pop());
             this.Hue = Convert.ToInt32(AllSettings.Pop());
-            this.Brightness = Convert.ToInt32(AllSettings.Pop());
+            this.setBrightnessFromDevice(Convert.ToInt32(AllSettings.Pop()));
             this.Mode = (byte)Convert.ToInt32(AllSettings.Pop());
             this.ManualFanSpeed = Convert.ToInt32(AllSettings.Pop());
             this.Hysteresis = Convert.ToInt32(AllSettings.Pop());
@@ -462,19 +487,103 @@ namespace ProjectCool_NT.Class
                 device_port = ProgramSettings.Pop();
             }   
         }
-
-        private void GetDeviceInfo()
+        private void InitialSetup()
         {
-            this.SendData("F");
-            string data = "0"; 
-            if (MainPort.BytesToRead > 0)
-            {
-                data = this.ReceiveData();
-                IncomingSettingsData = data.Split(';');
-                
+            GetDeviceInfo();
+            GetSensors();
+            GetSettings();
+        }
 
-                    this.device_firmware = IncomingSettingsData[0];
-                    this.device_model = IncomingSettingsData[1];
+        public void GetSensors()
+        {
+            
+            if (!device_model.Contains("PC") && DeviceConnected)
+            {
+                InitialSetup();
+            }
+
+            switch (device_model)
+            {
+                case "PC1.0":
+                    PC1GetSensorData();
+                    PC1SaveSensorData();
+                    break;
+            }
+        }
+
+        public void SaveSettings()
+        {
+            if (!device_model.Contains("PC") && DeviceConnected)
+            {
+                InitialSetup();
+            }
+
+            switch (device_model)
+            {
+                case "PC1.0":
+                    PC1SaveSettingsData();
+                    break;
+            }
+        }
+
+        public void RestoreSensor()
+        {
+            if (!device_model.Contains("PC") && DeviceConnected)
+            {
+                InitialSetup();
+            }
+
+            switch (device_model)
+            {
+                case "PC1.0":
+                    PC1RestoreSensorData();
+                    break;
+            }
+        }
+
+        public void RestoreSettings()
+        {
+            if (!device_model.Contains("PC") && DeviceConnected)
+            {
+                InitialSetup();
+            }
+
+            switch (device_model)
+            {
+                case "PC1.0":
+                    PC1RestoreSettingsData();
+                    break;
+            }
+        }
+
+        public void GetSettings()
+        {
+            if (!device_model.Contains("PC") && DeviceConnected)
+            {
+                InitialSetup();
+            }
+
+            switch (device_model)
+            {
+                case "PC1.0":
+                    PC1GetSettings();
+                    PC1SaveSettingsData();
+                    break;
+            }
+        }
+
+        public void FlashToDevice()
+        {
+            if (!device_model.Contains("PC") && DeviceConnected)
+            {
+                InitialSetup();
+            }
+
+            switch (device_model)
+            {
+                case "PC1.0":
+                    PC1Update();
+                    break;
             }
         }
 

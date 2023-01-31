@@ -96,31 +96,11 @@ namespace ProjectCool_NT
             }
         }
 
-        int[] SensorValues;
         void timer_Tick(object sender, EventArgs e)
         {
-            SensorValues = new int[4];
-         //   ProjectCoolDevice.GetSensorData();
-            SensorValues[0] = ProjectCoolDevice.chassis_temp;
-            SensorValues[1] = ProjectCoolDevice.chassis_humidity;
-            SensorValues[2] = ProjectCoolDevice.ProgramFanSpeed;
-            SensorValues[3] = ProjectCoolDevice.TachoFanSpeed;
-            TransferSensorData();
+            ProjectCoolDevice.GetSensors();
+            
         }
-
-        void TransferSensorData()
-        {
-            using (StreamWriter SensorData = new StreamWriter("SensorData.sensors", false))
-            {
-                for (int i = 0; i < SensorValues.Length; i++)
-                {
-                    SensorData.WriteLine(SensorValues[i]);
-                }
-                
-            }
-        }
-
-
         private void DragDropHandler (object sender, MouseEventArgs e)
         {
             if(e.LeftButton == MouseButtonState.Pressed)
