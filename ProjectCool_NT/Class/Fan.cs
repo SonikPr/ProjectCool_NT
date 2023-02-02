@@ -125,5 +125,51 @@ namespace ProjectCool_NT.Class
             }
 
         }
+
+
+
+        public string FanModeName()
+        {
+            switch (fan_mode)
+            {
+                case 0:
+                    return "Default";
+                case 1:
+                    return "Cool";
+                case 2:
+                    return "Quiet";
+                case 3:
+                    return "Fans off";
+                case 4:
+                    return "Manual";
+                case 5:
+                    return "100% speed";
+                default:
+                    return "unknown";
+            }
+
+        }
+
+        public string GetFanModeDescription()
+        {
+            switch (fan_mode)
+            {
+                case 0:
+                    return "Default mode with standart temperature curve - great for maintaining low noise and temps";
+                case 1:
+                    return "Short temp curve, means lower system temps but high noise";
+                case 2:
+                    return "Quiet mode for night gaming. NOTE: Means high system temps and, high GPU noise";
+                case 3:
+                    return "Completely turning off all fans, attached to the board";
+                case 4:
+                    return "User defined fixed fan speed";
+                case 5:
+                    return "Fans are fixed on 100% of ther speed";
+                default:
+                    return "Unknown moda enabled/loaded";
+            }
+
+        }
     }
 }

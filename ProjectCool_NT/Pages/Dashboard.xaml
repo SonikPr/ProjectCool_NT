@@ -418,10 +418,10 @@
                     <TextBlock
                         x:Name="dashboardFanMode"
                             Text="%FanMode%"
-                            FontSize="15" 
-                        FontWeight="ExtraLight" 
-                        FontFamily="Trebuchet MS" 
-                        Foreground="White"
+                            FontSize="12" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="LightGray"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Margin="2,7,0,5"
@@ -451,7 +451,7 @@
                         Grid.Column="0" 
                         Grid.Row="0"></TextBlock>
                     <TextBlock
-                        x:Name="Gear"
+                        x:Name="LedDescription"
                         Grid.Column="1"
                         Grid.Row="0"
                         Text="Hardware type: RZTK ARGB 120 (WS2812b compatible)"
@@ -530,10 +530,10 @@
                     <TextBlock
                         x:Name="dashboardActiveLEDMode"
                             Text="%ActiveMode%"
-                            FontSize="15" 
-                        FontWeight="ExtraLight" 
-                        FontFamily="Open Sans" 
-                        Foreground="White"
+                            FontSize="12" 
+                            FontWeight="ExtraLight" 
+                            FontFamily="Open Sans" 
+                            Foreground="LightGray"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="10,0,0,5"

@@ -16,9 +16,9 @@ namespace ProjectCool_NT.Class
         private int LIGHT_SAT;
         private int BREATHE_SPEED;
         private int COLOR_CHANGE_SPEED;
-        private byte MODE;
-        private byte VARIABLE_BRIGHTNESS_MODE;
-        private byte VARIABLE_BRIGHTNESS_VALUE;
+        private int MODE;
+        private int VARIABLE_BRIGHTNESS_MODE;
+        private int VARIABLE_BRIGHTNESS_VALUE;
         private string LED_DESCRIPTION = "WS2812b";
 
         public void CreateLed(string description, int brightness)
@@ -41,13 +41,13 @@ namespace ProjectCool_NT.Class
             set { LED_DESCRIPTION = value; }
         }
 
-        public byte variable_brightness_mode
+        public int variable_brightness_mode
         {
             get { return VARIABLE_BRIGHTNESS_MODE; }
             set { VARIABLE_BRIGHTNESS_MODE = value; }
         }
 
-        public byte variable_brightness_value
+        public int variable_brightness_value
         {
             get { return VARIABLE_BRIGHTNESS_VALUE; }
             set { VARIABLE_BRIGHTNESS_VALUE = value; }
@@ -89,10 +89,35 @@ namespace ProjectCool_NT.Class
             set { COLOR_CHANGE_SPEED = value; }
         }
 
-        public byte Mode
+        public int Mode
         {
             get { return MODE; }
             set { MODE = value; }
+        }
+
+        public string LedModeName()
+        {
+            switch (MODE){
+                case 0:
+                    return "Static color";
+                case 1:
+                    return "Spectre";
+                case 2:
+                    return "Rainbow";
+                case 3:
+                    return "Breathe";
+                case 4:
+                    return "Flame";
+                case 5:
+                    return "Fan speed display";
+                case 6:
+                    return "Running line";
+                case 7:
+                    return "Variable brightness";
+                default:
+                    return "unknown";
+            }
+            
         }
 
         /*

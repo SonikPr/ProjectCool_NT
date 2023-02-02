@@ -31,36 +31,49 @@ namespace ProjectCool_NT.Pages
             while (true)
             {
                 ProjectCoolDevice.LoadDevice();
-                Thread.Sleep(1000);
+                Thread.Sleep(700);
                 if (ProjectCoolDevice.model_name.Contains("PC"))
                 {
                     break;
                 }
             }
             UpdateDataTimer.Start();
+            UpdateInfo();
 
         }
-        int FanSpeedValue;
+        void UpdateInfo()
+        {
+            SensorType.Text = "SensorType: " + ProjectCoolDevice.temp_Sensor;
+            FanConnection.Text = "Fans: " + ProjectCoolDevice.FanDescription;
+            LedDescription.Text = "LEDs: "+ ProjectCoolDevice.leds_description;
+            dashboardFanMode.Text = ProjectCoolDevice.FanModeName();
+            dashboardActiveLEDMode.Text = ProjectCoolDevice.LedModeName();
+        }
         void UpdateData(object sender, EventArgs e)
         {
-                ProjectCoolDevice.RestoreSensor();
-                int fan_rpm = ProjectCoolDevice.TachoFanSpeed;
-                //int fan_rpm = Convert.ToInt32(SensorsData.Pop()); 
+                ProjectCoolDevice.RestoreSensor(); 
                 int fan_speed = ProjectCoolDevice.ProgramFanSpeed;
                 double humidity = ProjectCoolDevice.chassis_humidity;
                 double temp = ProjectCoolDevice.chassis_temp;
+                double CFM = ProjectCoolDevice.GetRealCFM();
+                double RPM = ProjectCoolDevice.GetRealRPM();
+                int brightness = ProjectCoolDevice.Brightness; 
 
                 humidity = humidity / 10;
                 temp = temp / 10;
 
-                FanRPM.Value = fan_rpm;
-                FanRPM.Tag = map(fan_rpm,0,100,0,1100).ToString();
+                FanRPM.Value = map((int)RPM,0,ProjectCoolDevice.MaxRPM,0,100);
+                FanRPM.Tag = RPM.ToString();
+                FanCFM.Value = map((int)CFM,0,(int)ProjectCoolDevice.MaxCFM,0,100);
+                FanCFM.Tag = CFM.ToString();
                 FanSpeed.Value = fan_speed;
                 FanSpeed.Tag = fan_speed.ToString();
                 CaseHumidity.Value = (int)humidity;
                 CaseHumidity.Tag = humidity.ToString();
                 CaseTemp.Value = map((int)temp,20,50,0,100);
-                CaseTemp.Tag = temp.ToString();   
+                CaseTemp.Tag = temp.ToString();
+                Brightness.Value = brightness;
+                Brightness.Tag = brightness.ToString(); 
         }
 
         int map(int x, int in_min, int in_max, int out_min, int out_max)
