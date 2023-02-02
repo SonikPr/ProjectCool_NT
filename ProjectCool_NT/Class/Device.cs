@@ -139,6 +139,11 @@ namespace ProjectCool_NT.Class
         {
             get { return device_model; }
         }
+
+        public string software_version
+        {
+            get { return device_firmware; }
+        }
         public string Fan_Connection
         {
             get { return FanConnection; }
@@ -581,6 +586,31 @@ namespace ProjectCool_NT.Class
             }
         }
 
+        private Stack<string> PC1Specs = new Stack<string>();
+        private void PC1Specifications()
+        {
+              
+            string file = "Devices info" + "\\" + "ProjectCool1.0.txt";
+            if (File.Exists(file))
+            {
+                string NewData;
+                using (StreamReader DatabaseFetcher = new StreamReader(file))
+                {
+                    while ((NewData = DatabaseFetcher.ReadLine()) != null)
+                    {
+                        PC1Specs.Push(NewData);
+                    }
+                }
+                LED_Type = PC1Specs.Pop();
+                PWM_Rate = PC1Specs.Pop();
+                temp_Sensor = PC1Specs.Pop();
+                Fan_Tacho_Type = PC1Specs.Pop();
+                Max_Fan_Support = PC1Specs.Pop();
+                Fan_Connection = PC1Specs.Pop() ;
+                PC1Specs.Clear();
+            }
+        }
+
         public void SaveDevice()
         {
             this.GetDeviceInfo();
@@ -596,7 +626,8 @@ namespace ProjectCool_NT.Class
             this.RestoreCurrentDeviceInfo();
             this.RestoreSettings();
             this.RestoreSoftwareSettings();
-            this.RestoreSensor();    
+            this.RestoreSensor();
+            this.GetSpecifications();
         }
 
         public void DeleteDevice()
@@ -683,6 +714,16 @@ namespace ProjectCool_NT.Class
                         PC1Update();
                         break;
                 }
+        }
+
+        public void GetSpecifications()
+        {
+            switch (device_model)
+            {
+                case "PC1.0":
+                    this.PC1Specifications();
+                    break;
+            }
         }
 
 
