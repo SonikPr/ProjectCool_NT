@@ -12,14 +12,14 @@ namespace ProjectCool_NT.Class
         private int tacho_fan_speed;
         private int fan_mode;
         private int manual_fan_speed;
-        private double maxCFM;
+        private double maxCFM = 20;
         private double currentCFM;
-        private int maxRPM;
+        private int maxRPM = 1000;
         private int currentRPM;
-        private int intakeCount;
-        private int exhaustCount;
+        private int intakeCount = 1;
+        private int exhaustCount = 1;
         private int hysteresis;
-        private string fan_description;
+        private string fan_description = "generic MOLEX fan";
 
         public void CreateFans() { }
 

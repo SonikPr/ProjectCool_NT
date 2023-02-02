@@ -12,6 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.IO;
+using System.Threading;
 
 namespace ProjectCool_NT.Pages
 {
@@ -25,10 +26,19 @@ namespace ProjectCool_NT.Pages
         {
             InitializeComponent();
             DispatcherTimer UpdateDataTimer = new DispatcherTimer();
-            UpdateDataTimer.Interval = TimeSpan.FromMilliseconds(100);
+            UpdateDataTimer.Interval = TimeSpan.FromMilliseconds(500);
             UpdateDataTimer.Tick += UpdateData;
-            ProjectCoolDevice.LoadDevice();
+            while (true)
+            {
+                ProjectCoolDevice.LoadDevice();
+                Thread.Sleep(1000);
+                if (ProjectCoolDevice.model_name.Contains("PC"))
+                {
+                    break;
+                }
+            }
             UpdateDataTimer.Start();
+
         }
         int FanSpeedValue;
         void UpdateData(object sender, EventArgs e)

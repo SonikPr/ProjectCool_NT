@@ -9,6 +9,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Diagnostics.PerformanceData;
 using System.Windows.Controls;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ProjectCool_NT.Class
 {
@@ -35,6 +36,12 @@ namespace ProjectCool_NT.Class
         private string project_folder;
         private string IO_files_folder;
         private string settings_folder;
+        private string FanConnection = "conntection";
+        private string MaxFanSupport = "5pcs";
+        private string FanTachoType = "Program";
+        private string tempSensor = "DTH11";
+        private string PWMRate = "60HZ";
+        private string LEDType = "WS2812b";
 
 
 
@@ -128,13 +135,54 @@ namespace ProjectCool_NT.Class
              
             
         }
-
+        public string model_name
+        {
+            get { return device_model; }
+        }
+        public string Fan_Connection
+        {
+            get { return FanConnection; }
+            set { FanConnection = value; }
+        }
+        public string Max_Fan_Support 
+        {
+            get { return MaxFanSupport; }
+            set { MaxFanSupport = value; }
+        }
+        public string Fan_Tacho_Type 
+        {
+            get { return FanTachoType; }
+            set { FanTachoType = value;}
+        }
+        public string temp_Sensor 
+        {
+            get { return tempSensor; }
+            set
+            {
+                tempSensor = value;
+            }   
+        }
+        public string PWM_Rate 
+        {
+            get { return PWMRate; }
+            set
+            {
+                PWMRate = value;
+            }
+        }
+        public string LED_Type 
+        {
+            get { return LEDType; }
+            set
+            {
+                LEDType = value;
+            }
+        }
         public int UpdateRate
         {
             get { return update_rate; }
             set { update_rate = value; }
         }
-
         public int chassis_temp
         {
             get { return systemps.ChassisTemp; }
@@ -389,15 +437,13 @@ namespace ProjectCool_NT.Class
                         AllSensors.Push(NewData);
                     }
                 }
+
+                TachoFanSpeed = Convert.ToInt32(AllSensors.Pop()); ;
+                ProgramFanSpeed = Convert.ToInt32(AllSensors.Pop());
+                systemps.ChassisHumidity = Convert.ToInt32(AllSensors.Pop());
+                systemps.ChassisTemp = Convert.ToInt32(AllSensors.Pop());
+                AllSensors.Clear();
             }
-            TachoFanSpeed = Convert.ToInt32(AllSensors.Pop()); ;
-            ProgramFanSpeed = Convert.ToInt32(AllSensors.Pop());
-            systemps.ChassisHumidity = Convert.ToInt32(AllSensors.Pop());
-            systemps.ChassisTemp = Convert.ToInt32(AllSensors.Pop());
-            AllSensors.Clear();
-
-
-
         }
 
         
@@ -439,26 +485,33 @@ namespace ProjectCool_NT.Class
                         AllSettings.Push(NewData);
                     }
                 }
-            }      
-            this.variable_brightness_value = (byte)Convert.ToInt32(AllSettings.Pop());
-            this.variable_brightness_mode = (byte)Convert.ToInt32(AllSettings.Pop());
-            this.BreatheSpeed = Convert.ToInt32(AllSettings.Pop());
-            this.ColorChangeSpeed = Convert.ToInt32(AllSettings.Pop());
-            this.Sat = Convert.ToInt32(AllSettings.Pop());
-            this.Hue = Convert.ToInt32(AllSettings.Pop());
-            this.setBrightnessFromDevice(Convert.ToInt32(AllSettings.Pop()));
-            this.Mode = (byte)Convert.ToInt32(AllSettings.Pop());
-            this.ManualFanSpeed = Convert.ToInt32(AllSettings.Pop());
-            this.Hysteresis = Convert.ToInt32(AllSettings.Pop());
-            this.CurrentFanMode = Convert.ToInt32(AllSettings.Pop());
-            AllSettings.Clear();
+
+                this.variable_brightness_value = (byte)Convert.ToInt32(AllSettings.Pop());
+                this.variable_brightness_mode = (byte)Convert.ToInt32(AllSettings.Pop());
+                this.BreatheSpeed = Convert.ToInt32(AllSettings.Pop());
+                this.ColorChangeSpeed = Convert.ToInt32(AllSettings.Pop());
+                this.Sat = Convert.ToInt32(AllSettings.Pop());
+                this.Hue = Convert.ToInt32(AllSettings.Pop());
+                this.setBrightnessFromDevice(Convert.ToInt32(AllSettings.Pop()));
+                this.Mode = (byte)Convert.ToInt32(AllSettings.Pop());
+                this.ManualFanSpeed = Convert.ToInt32(AllSettings.Pop());
+                this.Hysteresis = Convert.ToInt32(AllSettings.Pop());
+                this.CurrentFanMode = Convert.ToInt32(AllSettings.Pop());
+                AllSettings.Clear();
+            }
         }
 
         private void SaveSoftwareSettings()
         {
-            string[] SettingsValues = new string[2];
+            string[] SettingsValues = new string[8];
             SettingsValues[0] = device_port;
             SettingsValues[1] = update_rate.ToString();
+            SettingsValues[2] = FanDescription.ToString();
+            SettingsValues[3] = leds_description.ToString();
+            SettingsValues[4] = IntakeFanCount.ToString();
+            SettingsValues[5] = ExhaustFanCount.ToString();
+            SettingsValues[6] = MaxRPM.ToString();
+            SettingsValues[7] = MaxCFM.ToString();  
             using (StreamWriter SensorData = new StreamWriter(settings_folder + "\\" + ProgramSettingsFile, false))
             {
                 for (int i = 0; i < SettingsValues.Length; i++)
@@ -483,6 +536,12 @@ namespace ProjectCool_NT.Class
                         ProgramSettings.Push(NewData);
                     }
                 }
+                MaxCFM = Convert.ToInt32(ProgramSettings.Pop());
+                MaxRPM = Convert.ToInt32(ProgramSettings.Pop());
+                ExhaustFanCount= Convert.ToInt32(ProgramSettings.Pop());    
+                IntakeFanCount = Convert.ToInt32(ProgramSettings.Pop());
+                leds_description= ProgramSettings.Pop();
+                FanDescription= ProgramSettings.Pop();
                 update_rate = Convert.ToInt32(ProgramSettings.Pop());
                 device_port = ProgramSettings.Pop();
             }   
@@ -522,21 +581,13 @@ namespace ProjectCool_NT.Class
             }
         }
 
-        private void InitialSetup()
-        {
-            GetDeviceInfo();
-            GetSensors();
-            GetSettings();
-        }
-
         public void SaveDevice()
         {
             this.GetDeviceInfo();
-            this.GetSensors(); 
-            this.GetSettings();
             this.SaveCurrentDeviceInfo();
             this.SaveSoftwareSettings();
-            DeviceConnected = true;
+            this.GetSensors(); 
+            this.GetSettings();
         }
 
         public void LoadDevice() 
@@ -559,89 +610,79 @@ namespace ProjectCool_NT.Class
 
 
         public void GetSensors()
-        {
-            
-            if (!device_model.Contains("PC") && DeviceConnected)
-            {
-                InitialSetup();
-            }
-
-            switch (device_model)
-            {
-                case "PC1.0":
-                    PC1GetSensorData();
-                    PC1SaveSensorData();
-                    break;
-            }
+        {     
+                switch (device_model)
+                {
+                    case "PC1.0":
+                        PC1GetSensorData();
+                        PC1SaveSensorData();
+                        break;
+                }
         }
 
         public void GetSettings()
-        {
-            if (!device_model.Contains("PC") && DeviceConnected)
-            {
-                InitialSetup();
-            }
-
-            switch (device_model)
-            {
-                case "PC1.0":
-                    PC1GetSettings();
-                    PC1SaveSettingsData();
-                    break;
-            }
+        {   
+                switch (device_model)
+                {
+                    case "PC1.0":
+                        PC1GetSettings();
+                        PC1SaveSettingsData();
+                        break;
+                }
         }
 
         public void SaveSettings()
         {
-            if (!device_model.Contains("PC") && DeviceConnected)
-            {
-                InitialSetup();
-            }
 
-            switch (device_model)
-            {
-                case "PC1.0":
-                    PC1SaveSettingsData();
-                    break;
-            }
+                switch (device_model)
+                {
+                    case "PC1.0":
+                        PC1SaveSettingsData();
+                        break;
+                }
         }
 
         public void RestoreSensor()
         {
-           
-            switch (device_model)
+            /*
+            if (!device_model.Contains("PC"))
             {
-                case "PC1.0":
-                    PC1RestoreSensorData();
-                    break;
+                this.RestoreCurrentDeviceInfo();
             }
+            */
+            switch (device_model)
+                {
+                    case "PC1.0":
+                        PC1RestoreSensorData();
+                        break;
+                }
         }
 
         public void RestoreSettings()
         {
-            
-            switch (device_model)
+            /*
+            if (!device_model.Contains("PC"))
             {
-                case "PC1.0":
-                    PC1RestoreSettingsData();
-                    break;
+                this.RestoreCurrentDeviceInfo();
             }
+            */
+            switch (device_model)
+                {
+                    case "PC1.0":
+                        PC1RestoreSettingsData();
+                        break;
+                }
         }
 
 
         public void FlashToDevice()
-        {
-            if (!device_model.Contains("PC") && DeviceConnected)
-            {
-                InitialSetup();
-            }
-
-            switch (device_model)
-            {
-                case "PC1.0":
-                    PC1Update();
-                    break;
-            }
+        {  
+                switch (device_model)
+                {
+                    case "PC1.0":
+                        PC1Update();
+                        break;
+                }
         }
 
 

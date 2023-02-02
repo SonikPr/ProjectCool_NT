@@ -19,7 +19,7 @@ namespace ProjectCool_NT.Class
         private byte MODE;
         private byte VARIABLE_BRIGHTNESS_MODE;
         private byte VARIABLE_BRIGHTNESS_VALUE;
-        private string LED_DESCRIPTION;
+        private string LED_DESCRIPTION = "WS2812b";
 
         public void CreateLed(string description, int brightness)
         {
