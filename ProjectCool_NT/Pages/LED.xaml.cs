@@ -18,6 +18,7 @@ namespace ProjectCool_NT.Pages
     /// </summary>
     public partial class LED : Page
     {
+        Class.Device ProjectCoolDevice = new Class.Device();
         public LED()
         {
             InitializeComponent();
@@ -28,6 +29,43 @@ namespace ProjectCool_NT.Pages
                 {
                     ((RadioButton)Radiobutton).Checked += MenuItem_Checked;
                 }
+            }
+            ProjectCoolDevice.LoadDevice();
+            UpdateInfo();
+
+        }
+        void UpdateInfo()
+        {
+            LedDescription.Text = "LEDs: " + ProjectCoolDevice.leds_description;
+            LEDBrightness.Value = ProjectCoolDevice.Brightness;
+            switch (ProjectCoolDevice.Mode)
+            {
+                case 0:
+                    StaticMode.IsChecked = true;
+                    break;
+                case 1:
+                    SpectreMode.IsChecked = true;
+                    break;
+                case 2:
+                    RainbowMode.IsChecked = true;
+                    break;
+                case 3:
+                    BreatheMode.IsChecked = true;
+                    break;
+                case 4:
+                    FlameMode.IsChecked = true;
+                    break;
+                case 5:
+                    FSGMode.IsChecked = true;
+                    break;
+                case 6:
+                    RunningLineMode.IsChecked = true;
+                    break;
+                case 7:
+                    DybBrMode.IsChecked = true;
+                    break;
+                default:
+                    break;
             }
         }
 

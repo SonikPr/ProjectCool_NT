@@ -109,7 +109,7 @@ namespace ProjectCool_NT.Class
                 case 4:
                     return "Flame";
                 case 5:
-                    return "Fan speed display";
+                    return "Fan speed graph";
                 case 6:
                     return "Running line";
                 case 7:

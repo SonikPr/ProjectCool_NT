@@ -18,9 +18,18 @@ namespace ProjectCool_NT.Pages
     /// </summary>
     public partial class StaticModeTweaks : Page
     {
+        Class.Device ProjectCoolDevice = new Class.Device();
         public StaticModeTweaks()
         {
             InitializeComponent();
+            ProjectCoolDevice.LoadDevice();
+            UpdateInfo();
+
+        }
+        void UpdateInfo()
+        {
+            LED_hue.Value = ProjectCoolDevice.Hue;
+            LED_sat.Value = ProjectCoolDevice.Sat;
         }
     }
 }

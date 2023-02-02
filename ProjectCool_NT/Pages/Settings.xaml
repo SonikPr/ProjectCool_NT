@@ -358,7 +358,7 @@
                                  Grid.Column="1" 
                                  Background="Transparent"
                                  BorderBrush="#ff00f7"
-                                 Text="RZTK ARGB 120mm"
+                                 Text="Unknown"
                                  Foreground="White"
                                  VerticalContentAlignment="Center"
                                  >
@@ -397,7 +397,7 @@
                                  Grid.Column="1" 
                                  Background="Transparent"
                                  BorderBrush="#b300ff"
-                                 Text="3"
+                                 Text="0"
                                  Foreground="White"
                                  VerticalContentAlignment="Center"
                                  >
@@ -436,7 +436,7 @@
                                  Grid.Column="1" 
                                  Background="Transparent"
                                  BorderBrush="#b300ff"
-                                 Text="2"
+                                 Text="0"
                                  Foreground="White"
                                  VerticalContentAlignment="Center"
                                  >
@@ -476,7 +476,7 @@
                                  Grid.Column="1" 
                                  Background="Transparent"
                                  BorderBrush="#b300ff"
-                                 Text="1100"
+                                 Text="0"
                                  Foreground="White"
                                  VerticalContentAlignment="Center"
                                  >
@@ -515,7 +515,7 @@
                                  Grid.Column="1" 
                                  Background="Transparent"
                                  BorderBrush="#b300ff"
-                                 Text="32"
+                                 Text="0"
                                  Foreground="White"
                                  VerticalContentAlignment="Center"
                                  >
@@ -589,7 +589,7 @@
                                  Grid.Column="1" 
                                  Background="Transparent"
                                  BorderBrush="#ff00f7"
-                                 Text="RZTK ARGB 120mm (ws2812b compatible)"
+                                 Text="Unknown"
                                  Foreground="White"
                                  VerticalContentAlignment="Center"
                                  >

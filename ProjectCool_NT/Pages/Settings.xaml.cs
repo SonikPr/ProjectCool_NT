@@ -18,9 +18,23 @@ namespace ProjectCool_NT.Pages
     /// </summary>
     public partial class Settings : Page
     {
+        Class.Device ProjectCoolDevice = new Class.Device();
         public Settings()
         {
             InitializeComponent();
+            ProjectCoolDevice.LoadDevice();
+            UpdateInfo();
+
+        }
+        void UpdateInfo()
+        {
+            PortSelect.ItemsSource = ProjectCoolDevice.AvailablePorts;
+            FanDescription.Text = ProjectCoolDevice.FanDescription;
+            IntakeFanCount.Text = ProjectCoolDevice.IntakeFanCount.ToString();
+            ExhaustFanCount.Text = ProjectCoolDevice.ExhaustFanCount.ToString();
+            MaxRPM.Text = ProjectCoolDevice.MaxRPM.ToString();
+            MaxCFM.Text = ProjectCoolDevice.MaxCFM.ToString();
+            LEDDescription.Text = ProjectCoolDevice.leds_description;
         }
     }
 }

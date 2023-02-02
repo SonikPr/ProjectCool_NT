@@ -18,9 +18,42 @@ namespace ProjectCool_NT.Pages
     /// </summary>
     public partial class DynamicBrightnessTweaks : Page
     {
+        Class.Device ProjectCoolDevice = new Class.Device();
         public DynamicBrightnessTweaks()
         {
             InitializeComponent();
+            ProjectCoolDevice.LoadDevice();
+            UpdateInfo();
         }
+        void UpdateInfo()
+        {
+            switch (ProjectCoolDevice.variable_brightness_mode)
+            {
+                case 0:
+                    DynamicColor.IsChecked = true;
+                    break;
+                case 1:
+                    FlameColor.IsChecked = true;
+                    break;
+                default:
+                    break;
+            }
+            switch (ProjectCoolDevice.variable_brightness_value)
+            {
+                case 0:
+                    DisplayTemp.IsChecked = true;
+                    break;
+                case 1:
+                    DisplayFanSpeed.IsChecked = true;
+                    break;
+                case 2:
+                    DisplayHumidity.IsChecked = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
     }
 }

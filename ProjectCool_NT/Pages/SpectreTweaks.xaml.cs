@@ -18,9 +18,17 @@ namespace ProjectCool_NT.Pages
     /// </summary>
     public partial class SpectreTweaks : Page
     {
+        Class.Device ProjectCoolDevice = new Class.Device();
         public SpectreTweaks()
         {
             InitializeComponent();
+            ProjectCoolDevice.LoadDevice();
+            UpdateInfo();
+
+        }
+        void UpdateInfo()
+        {
+            Color_change_speed.Value = ProjectCoolDevice.ColorChangeSpeed;
         }
     }
 }

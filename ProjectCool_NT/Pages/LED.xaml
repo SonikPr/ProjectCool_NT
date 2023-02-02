@@ -109,7 +109,7 @@
                         Grid.Column="0" 
                         Grid.Row="0"></TextBlock>
                     <TextBlock
-                        x:Name="LEDHardwareType"
+                        x:Name="LedDescription"
                         Grid.Column="1"
                         Grid.Row="0"
                         Text="Hardware type: RZTK ARGB 120 (WS2812b compatible)"
@@ -129,7 +129,7 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Slider x:Name ="LEDBrightness" Template="{StaticResource Slider}" Width="Auto" Minimum="0" Maximum="255" Value="100" Grid.Row="0" Grid.ColumnSpan="2" Margin="2,0,2,0"/>
+                        <Slider x:Name ="LEDBrightness" Template="{StaticResource Slider}" Width="Auto" Minimum="0" Maximum="100" Value="25" Grid.Row="0" Grid.ColumnSpan="2" Margin="2,0,2,0"/>
                         <TextBlock
                             Text="0%"
                             FontSize="12" 

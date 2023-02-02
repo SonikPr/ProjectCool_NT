@@ -18,9 +18,18 @@ namespace ProjectCool_NT.Pages
     /// </summary>
     public partial class BreatheTweaks : Page
     {
+        Class.Device ProjectCoolDevice = new Class.Device();
         public BreatheTweaks()
         {
-            InitializeComponent();
+                InitializeComponent();
+                ProjectCoolDevice.LoadDevice();
+                UpdateInfo();
+
+            }
+            void UpdateInfo()
+            {
+                Breathe_speed.Value = ProjectCoolDevice.BreatheSpeed;
+            }
+
         }
-    }
 }
