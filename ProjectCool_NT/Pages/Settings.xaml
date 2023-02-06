@@ -217,6 +217,7 @@
                             />
                         <ComboBox 
                             x:Name="PortSelect"
+                            LostFocus="UpdateAllOnChanging"
                             FontSize="13"
                             Text="No compatble device connected"
                             Style="{DynamicResource theComboBox}"
@@ -351,6 +352,7 @@
                             Grid.Row="1"
                             />
                         <TextBox x:Name="FanDescription"
+                                 LostFocus="UpdateAllOnChanging"
                                  Width="Auto" 
                                  MinHeight="25"
                                  Margin="0,2,0,2" 

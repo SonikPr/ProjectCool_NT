@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Printing;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,6 +36,11 @@ namespace ProjectCool_NT.Pages
             MaxRPM.Text = ProjectCoolDevice.MaxRPM.ToString();
             MaxCFM.Text = ProjectCoolDevice.MaxCFM.ToString();
             LEDDescription.Text = ProjectCoolDevice.leds_description;
+        }
+
+        private void UpdateAllOnChanging(Object sender, EventArgs e)
+        {
+            MessageBox.Show("You have changed anything");
         }
     }
 }

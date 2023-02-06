@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading;
 using System.Windows;
@@ -83,25 +84,38 @@ namespace ProjectCool_NT.Pages
         {
             ProjectCoolDevice.RestoreSensor();
             int fan_speed = ProjectCoolDevice.ProgramFanSpeed;
-            double humidity = ProjectCoolDevice.chassis_humidity;
-            double temp = ProjectCoolDevice.chassis_temp;
-            double CFM = ProjectCoolDevice.GetRealCFM();
-            double RPM = ProjectCoolDevice.GetRealRPM();
-            int brightness = ProjectCoolDevice.Brightness;
+            if (ProjectCoolDevice.model_name == "PC1.0")
+            {
+                double CFM = ProjectCoolDevice.GetRealCFM();
+                double RPM = ProjectCoolDevice.GetRealRPM();
+                TachoRPM.Value = map((int)RPM, 0, ProjectCoolDevice.MaxRPM, 0, 100);
+                TachoRPM.Tag = RPM.ToString();          
+                IntakeCFM.Value = map((int)(CFM * ProjectCoolDevice.IntakeFanCount), 0, (int)(ProjectCoolDevice.MaxCFM * ProjectCoolDevice.IntakeFanCount), 0, 100);
+                IntakeCFM.Tag = (CFM * ProjectCoolDevice.IntakeFanCount).ToString();
+                ExhaustCFM.Value = map((int)(CFM * ProjectCoolDevice.ExhaustFanCount), 0, (int)(ProjectCoolDevice.MaxCFM * ProjectCoolDevice.ExhaustFanCount), 0, 100);
+                ExhaustCFM.Tag = (CFM * ProjectCoolDevice.ExhaustFanCount).ToString();
+            }
+            else
+                if (ProjectCoolDevice.model_name == "PC1.1")
+            {
+                int maxRPM = ProjectCoolDevice.TachoFanSpeed;
+                if (maxRPM > ProjectCoolDevice.MaxRPM)
+                {
+                    ProjectCoolDevice.MaxRPM = maxRPM;
+                }
 
-            humidity = humidity / 10;
-            temp = temp / 10;
+                TachoRPM.Value = map(ProjectCoolDevice.TachoFanSpeed, 0, ProjectCoolDevice.MaxRPM, 0, 100);
+                TachoRPM.Tag = ProjectCoolDevice.TachoFanSpeed.ToString();
 
-            TachoRPM.Value = map((int)RPM, 0, ProjectCoolDevice.MaxRPM, 0, 100);
-            TachoRPM.Tag = RPM.ToString();
-            FanCFM.Value = map((int)CFM, 0, (int)ProjectCoolDevice.MaxCFM, 0, 100);
-            FanCFM.Tag = CFM.ToString();
+                double CFM = (double)ProjectCoolDevice.MaxCFM * ((double)ProjectCoolDevice.TachoFanSpeed / (double)ProjectCoolDevice.MaxRPM);
+                CFM = Math.Round(CFM, 2);
+                IntakeCFM.Value = map((int)(CFM * ProjectCoolDevice.IntakeFanCount), 0, (int)(ProjectCoolDevice.MaxCFM * ProjectCoolDevice.IntakeFanCount), 0, 100);
+                IntakeCFM.Tag = Math.Round((CFM * ProjectCoolDevice.IntakeFanCount),2).ToString();
+                ExhaustCFM.Value = map((int)(CFM * ProjectCoolDevice.ExhaustFanCount), 0, (int)(ProjectCoolDevice.MaxCFM * ProjectCoolDevice.ExhaustFanCount), 0, 100);
+                ExhaustCFM.Tag = Math.Round((CFM * ProjectCoolDevice.ExhaustFanCount),2).ToString();
+            }
             TargetRPM.Value = fan_speed;
             TargetRPM.Tag = fan_speed.ToString();
-            IntakeCFM.Value = map((int)(CFM*ProjectCoolDevice.IntakeFanCount), 0, (int)(ProjectCoolDevice.MaxCFM * ProjectCoolDevice.IntakeFanCount), 0, 100);
-            IntakeCFM.Tag = (CFM * ProjectCoolDevice.IntakeFanCount).ToString();
-            ExhaustCFM.Value = map((int)(CFM * ProjectCoolDevice.ExhaustFanCount), 0, (int)(ProjectCoolDevice.MaxCFM * ProjectCoolDevice.ExhaustFanCount), 0, 100);
-            ExhaustCFM.Tag = (CFM * ProjectCoolDevice.ExhaustFanCount).ToString();
         }
 
         int map(int x, int in_min, int in_max, int out_min, int out_max)

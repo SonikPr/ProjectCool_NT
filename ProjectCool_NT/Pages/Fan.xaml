@@ -227,16 +227,16 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <ProgressBar 
-                        x:Name="FanCFM"
-                        Value="100" 
+                            <ProgressBar 
+                        x:Name="IntakeCFM"
+                        Value="0" 
                         Tag="32" 
                         Maximum="100" 
                         Margin="5"
                         Grid.Row="0"
                             Grid.ColumnSpan="2"
                         />
-                                <TextBlock
+                            <TextBlock
                             Text="0%"
                             FontSize="12" 
                         FontWeight="Medium" 
@@ -259,50 +259,7 @@
                             Grid.Row="1"
                             />
                             </Grid>
-                            <Grid Grid.Column="1" Grid.Row="4">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height ="Auto"/>
-                                    <RowDefinition Height="18">
-                                    </RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <ProgressBar 
-                        x:Name="TachoRPM"
-                        Value="100" 
-                        Tag="1100" 
-                        Maximum="100" 
-                        Margin="5"
-                        Grid.Row="0"
-                            Grid.ColumnSpan="2"
-                        />
-                                <TextBlock
-                            Text="0%"
-                            FontSize="12" 
-                        FontWeight="Medium" 
-                        FontFamily="Trebuchet MS" 
-                        Foreground="#858585"
-                        HorizontalAlignment="Left"
-                        Margin="5,0,0,5"
-                            Grid.Column="0"
-                            Grid.Row="1"
-                            />
-                                <TextBlock
-                            Text="100%"
-                            FontSize="12" 
-                        FontWeight="Medium" 
-                        FontFamily="Trebuchet MS" 
-                        Foreground="#858585"
-                        HorizontalAlignment="Right"
-                        Margin="5,0,45,5"
-                            Grid.Column="1"
-                            Grid.Row="1"
-                            />
-                            </Grid>
-
-                        <Grid Grid.Column="1" Grid.Row="2">
+                        <Grid Grid.Column="1" Grid.Row="4">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height ="Auto"/>
                                 <RowDefinition Height="18">
@@ -313,9 +270,9 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <ProgressBar 
-                        x:Name="IntakeCFM"
+                        x:Name="TachoRPM"
                         Value="100" 
-                        Tag="32" 
+                        Tag="1100" 
                         Maximum="100" 
                         Margin="5"
                         Grid.Row="0"
@@ -356,7 +313,7 @@
                             </Grid.ColumnDefinitions>
                             <ProgressBar 
                         x:Name="ExhaustCFM"
-                        Value="100" 
+                        Value="0" 
                         Tag="32" 
                         Maximum="100" 
                         Margin="5"

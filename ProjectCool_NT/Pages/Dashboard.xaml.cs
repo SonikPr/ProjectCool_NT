@@ -55,17 +55,39 @@ namespace ProjectCool_NT.Pages
                 int fan_speed = ProjectCoolDevice.ProgramFanSpeed;
                 double humidity = ProjectCoolDevice.chassis_humidity;
                 double temp = ProjectCoolDevice.chassis_temp;
-                double CFM = ProjectCoolDevice.GetRealCFM();
-                double RPM = ProjectCoolDevice.GetRealRPM();
+               
                 int brightness = ProjectCoolDevice.Brightness; 
 
                 humidity = humidity / 10;
                 temp = temp / 10;
 
-                FanRPM.Value = map((int)RPM,0,ProjectCoolDevice.MaxRPM,0,100);
+            if (ProjectCoolDevice.model_name == "PC1.0")
+            {
+                double CFM = ProjectCoolDevice.GetRealCFM();
+                double RPM = ProjectCoolDevice.GetRealRPM();
+                FanRPM.Value = map((int)RPM, 0, ProjectCoolDevice.MaxRPM, 0, 100);
                 FanRPM.Tag = RPM.ToString();
-                FanCFM.Value = map((int)CFM,0,(int)ProjectCoolDevice.MaxCFM,0,100);
+                FanCFM.Value = map((int)CFM, 0, (int)ProjectCoolDevice.MaxCFM, 0, 100);
                 FanCFM.Tag = CFM.ToString();
+            }
+            else
+                if(ProjectCoolDevice.model_name == "PC1.1")
+            {
+                int maxRPM = ProjectCoolDevice.TachoFanSpeed;
+                if(maxRPM > ProjectCoolDevice.MaxRPM)
+                {
+                    ProjectCoolDevice.MaxRPM = maxRPM;
+                }
+
+                FanRPM.Value = map(ProjectCoolDevice.TachoFanSpeed, 0, ProjectCoolDevice.MaxRPM, 0, 100);
+                FanRPM.Tag = ProjectCoolDevice.TachoFanSpeed.ToString();
+
+                double CFM_PERC = (double)ProjectCoolDevice.TachoFanSpeed / (double)ProjectCoolDevice.MaxRPM;
+                double CFM = (double)ProjectCoolDevice.MaxCFM * (double)CFM_PERC;
+                CFM = Math.Round(CFM, 2);
+                FanCFM.Value = map((int)CFM, 0, (int)ProjectCoolDevice.MaxCFM, 0, 100);
+                FanCFM.Tag = CFM.ToString();
+            }
                 FanSpeed.Value = fan_speed;
                 FanSpeed.Tag = fan_speed.ToString();
                 CaseHumidity.Value = (int)humidity;

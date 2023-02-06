@@ -25,7 +25,7 @@ namespace ProjectCool_NT.Class
         private string device_model = "";
         private string device_firmware = "";
         private string device_port;
-        private int update_rate;
+        private int update_rate = 1000;
         private string[] ports;
         private int PortError_count = 0;
         private int[] SensorsData = new int[13];
@@ -589,8 +589,17 @@ namespace ProjectCool_NT.Class
         private Stack<string> PC1Specs = new Stack<string>();
         private void PC1Specifications()
         {
-              
-            string file = "Devices info" + "\\" + "ProjectCool1.0.txt";
+
+            string file = "Devices info" + "\\" + "ProjectCool0.0.txt"; ;
+            switch (device_model)
+            {
+                case "PC1.0":
+                    file = "Devices info" + "\\" + "ProjectCool1.0.txt";
+                    break;
+                case "PC1.1":
+                    file = "Devices info" + "\\" + "ProjectCool1.1.txt";
+                    break;
+            }
             if (File.Exists(file))
             {
                 string NewData;
@@ -610,7 +619,6 @@ namespace ProjectCool_NT.Class
                 PC1Specs.Clear();
             }
         }
-
         public void SaveDevice()
         {
             this.GetDeviceInfo();
@@ -645,7 +653,8 @@ namespace ProjectCool_NT.Class
                 switch (device_model)
                 {
                     case "PC1.0":
-                        PC1GetSensorData();
+                    case "PC1.1":
+                    PC1GetSensorData();
                         PC1SaveSensorData();
                         break;
                 }
@@ -656,7 +665,8 @@ namespace ProjectCool_NT.Class
                 switch (device_model)
                 {
                     case "PC1.0":
-                        PC1GetSettings();
+                    case "PC1.1":
+                    PC1GetSettings();
                         PC1SaveSettingsData();
                         break;
                 }
@@ -668,7 +678,8 @@ namespace ProjectCool_NT.Class
                 switch (device_model)
                 {
                     case "PC1.0":
-                        PC1SaveSettingsData();
+                    case "PC1.1":
+                    PC1SaveSettingsData();
                         break;
                 }
         }
@@ -684,7 +695,8 @@ namespace ProjectCool_NT.Class
             switch (device_model)
                 {
                     case "PC1.0":
-                        PC1RestoreSensorData();
+                    case "PC1.1":
+                    PC1RestoreSensorData();
                         break;
                 }
         }
@@ -700,7 +712,8 @@ namespace ProjectCool_NT.Class
             switch (device_model)
                 {
                     case "PC1.0":
-                        PC1RestoreSettingsData();
+                    case "PC1.1":
+                    PC1RestoreSettingsData();
                         break;
                 }
         }
@@ -711,7 +724,8 @@ namespace ProjectCool_NT.Class
                 switch (device_model)
                 {
                     case "PC1.0":
-                        PC1Update();
+                    case "PC1.1":
+                    PC1Update();
                         break;
                 }
         }
@@ -721,6 +735,7 @@ namespace ProjectCool_NT.Class
             switch (device_model)
             {
                 case "PC1.0":
+                case "PC1.1":
                     this.PC1Specifications();
                     break;
             }
