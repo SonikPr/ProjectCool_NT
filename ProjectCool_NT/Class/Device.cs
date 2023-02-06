@@ -250,9 +250,9 @@ namespace ProjectCool_NT.Class
             {
                 MainPort.PortName = port_name;
                 MainPort.BaudRate = BaudRate;
-                MainPort.Open();   
+                MainPort.Close();
+                MainPort.Open();            
                 return "OK";
-
             }
             catch (Exception ex)
             {

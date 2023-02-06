@@ -47,9 +47,9 @@ namespace ProjectCool_NT
                 {
                     ((RadioButton)Radiobutton).Checked += MenuItem_Checked;
                 }
-            }
+            }   
+            ProjectCoolDevice.CreateDevice();
             PageContainer.Navigate(new System.Uri("Pages/Dashboard.xaml", UriKind.RelativeOrAbsolute));
-            ProjectCoolDevice.CreateDevice();    
         }
         
 
